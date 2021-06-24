@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+   <item android:id="@+id/searchIcon"
+       android:title="Search"
+       android:icon="@drawable/ic_baseline_search_24"
+       app:showAsAction="ifRoom|collapseActionView"
+
+       app:actionViewClass="android.widget.SearchView"></item>
+    <item android:id="@+id/search"
+        android:icon="@drawable/search"
+        android:title="Search"
+        app:showAsAction="never"
+        android:iconTint="@color/white" />
+
+    <item android:id="@+id/userProfile"
+        android:title="My Profile"
+        app:showAsAction="never"
+        android:iconTint="@color/white" />
+
+    <item android:id="@+id/signout"
+        android:icon="@drawable/exit"
+        android:title="Sign out"
+        app:showAsAction="never"
+        android:iconTint="@color/white" />
+
+</menu>

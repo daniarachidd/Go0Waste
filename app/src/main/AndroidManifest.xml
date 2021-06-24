@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="daniarachid.donation">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Donation">
+        <activity android:name=".Categories"></activity>
+        <activity android:name=".DonationItemView" />
+        <activity android:name=".MyItemView" />
+        <activity android:name=".TestMainDonation" />
+        <activity android:name=".TestMyItem" />
+        <activity android:name=".EditProfile" />
+        <activity android:name=".TestingToolBar" />
+        <activity android:name=".Report" />
+        <activity android:name=".MyItems" />
+        <activity android:name=".chatActivity">
+
+            <!-- Need to modify the audio part -->
+        </activity>
+        <activity
+            android:name=".DonorDonationRequest"
+            android:label="Donation Requests" />
+        <activity
+            android:name=".ReceiverDonationRequest"
+            android:label="My Donation Requests" />
+        <activity
+            android:name=".AddDonationItem"
+            android:label="@string/addDonationItemTitle" />
+        <activity
+            android:name=".UserProfile"
+            android:label="@string/userProfileTitle" />
+        <activity
+            android:name=".SignupActivity"
+            android:label="@string/signupTitle" />
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/signinTitle">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>

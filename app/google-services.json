@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "569399052450",
+    "project_id": "donationapp-83c71",
+    "storage_bucket": "donationapp-83c71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569399052450:android:62ca19bc285d9a0c59effb",
+        "android_client_info": {
+          "package_name": "daniarachid.donation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "569399052450-inh501j7q3fjobq6lr5t7sligqtfglrv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCiuRWkyrx8AN2VNWNtb_jSxq5mqWtAneo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "569399052450-inh501j7q3fjobq6lr5t7sligqtfglrv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
