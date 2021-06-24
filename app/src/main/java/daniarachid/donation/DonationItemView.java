@@ -86,7 +86,7 @@ public class DonationItemView extends AppCompatActivity {
     private void requestItem() {
         // add a donation request to firebase
         //userId, donorId, status, donationRequestId, date
-        //what if quantity > 1> 
+        //what if quantity > 1>
         //send a notification to the donor
         //change the button text to Requested
     }
