@@ -1,6 +1,5 @@
 package daniarachid.donation;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,10 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -29,14 +26,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
-public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public class MyItemsAdapter extends RecyclerView.Adapter<MyItemsAdapter.ViewHolder> {
 
     List<String> titles, images, descriptions, quantities, productId, userIds, categories;
     LayoutInflater inflater;
 
-    Adapter(Context ctx, List<String> titles, List<String> images, List<String> descriptions, List<String> quantities, List<String> categories, List<String> productId, List<String> userId) {
+    MyItemsAdapter(Context ctx, List<String> titles, List<String> images, List<String> descriptions, List<String> quantities, List<String> categories, List<String> productId, List<String> userId) {
 
         this.descriptions = descriptions;
         this.titles = titles;

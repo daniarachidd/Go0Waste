@@ -166,6 +166,7 @@ public class AddDonationItem extends AppCompatActivity {
         item.put("category", category);
         item.put("userId", userId);
         item.put("image", imgUri);
+        item.put("status", "Available");
         docReference.set(item).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {

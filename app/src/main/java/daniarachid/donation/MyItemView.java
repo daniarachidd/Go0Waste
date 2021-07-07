@@ -6,6 +6,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -115,6 +117,7 @@ public class MyItemView extends AppCompatActivity {
                 editedItem.put("userId", userId);
                 editedItem.put("image", strImgUri);
 
+
                 docRef.update(editedItem).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -144,16 +147,60 @@ public class MyItemView extends AppCompatActivity {
         imgDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DocumentReference docRef = fStore.collection("Items").document(itemId);
-                docRef.delete();
-                StorageReference storageReference;
-                storageReference = FirebaseStorage.getInstance().getReference();
-                StorageReference fileRef = storageReference.child("Items/" +itemId + "-" + title + ".jpg");
-                fileRef.delete();
-                Toast.makeText(MyItemView.this, "Item is deleted", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), TestMyItem.class));
-                finish();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyItemView.this);
+                builder.setTitle("Delete Donation Item?");
+                builder.setMessage("This will permanently delete your item");
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //delete
+                        DocumentReference docRef = fStore.collection("Items").document(itemId);
+                        docRef.delete();
+                        StorageReference storageReference;
+                        storageReference = FirebaseStorage.getInstance().getReference();
+                        StorageReference fileRef = storageReference.child("Items/" +itemId + "-" + title + ".jpg");
+                        fileRef.delete();
+                        Toast.makeText(MyItemView.this, "Item is deleted", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(getApplicationContext(), TestMyItem.class));
+                        finish();
+                        dialog.dismiss();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+
             }
+        });
+
+    }
+    private void showDetails() {
+        mTitle.setText(title);
+        mDesc.setText(description);
+        mQuan.setText(quantity);
+        mStatus.setText("Available");
+        swStatus.setChecked(true);
+
+        String[] categories = {"Food", "Women Clothes", "Men Clothes", "Kids Clothes", "Toys", "Appliances"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MyItemView.this,android.R.layout.simple_spinner_item, categories);
+        mCategory.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        mCategory.setSelection(adapter.getPosition(category));
+
+        //display pic
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+        StorageReference profileRef = storageReference.child("Items/" + itemId + "-" + title + ".jpg");
+        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Picasso.get().load(uri).into(itemImage);
+            }
+
         });
 
     }
@@ -236,30 +283,6 @@ public class MyItemView extends AppCompatActivity {
     }
 
 
-    private void showDetails() {
-        mTitle.setText(title);
-        mDesc.setText(description);
-        mQuan.setText(quantity);
-        mStatus.setText("Available");
-        swStatus.setChecked(true);
 
-        String[] categories = {"Food", "Women Clothes", "Men Clothes", "Kids Clothes", "Toys", "Appliances"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MyItemView.this,android.R.layout.simple_spinner_item, categories);
-        mCategory.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        mCategory.setSelection(adapter.getPosition(category));
-
-        //display pic
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference profileRef = storageReference.child("Items/" + itemId + "-" + title + ".jpg");
-        profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Picasso.get().load(uri).into(itemImage);
-            }
-
-        });
-
-    }
 
 }

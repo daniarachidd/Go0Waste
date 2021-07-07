@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DonationItemView">
+    tools:context=".ReceiverDonationRequestReview">
 
     <TextView
         android:id="@+id/textView22"
@@ -26,7 +26,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:text="Category"
+        android:text="Request Date"
         android:textColor="#605D5D"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -49,9 +49,9 @@
         android:id="@+id/txtRequestDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginRight="55dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginRight="53dp"
         android:width="200dp"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -68,7 +68,7 @@
         android:textColor="#605D5D"
         android:textSize="18dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <ImageView
         android:id="@+id/imgItem"
@@ -94,26 +94,12 @@
         app:layout_constraintTop_toBottomOf="@+id/imgItem" />
 
     <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:height="50dp"
-        android:text="Description"
-        android:textColor="#605D5D"
-        android:textSize="18dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-    <TextView
         android:id="@+id/txtTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginRight="55dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginRight="53dp"
         android:width="200dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -122,33 +108,18 @@
         app:layout_constraintTop_toBottomOf="@+id/imgItem" />
 
     <TextView
-        android:id="@+id/txtDesc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginRight="55dp"
-        android:width="200dp"
-        android:height="50dp"
-        android:ems="10"
-        android:maxLines="3"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
-
-    <TextView
         android:id="@+id/txtQuantity"
         android:layout_width="200dp"
         android:layout_height="28dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginRight="55dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginRight="53dp"
         android:width="200dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDesc" />
+        app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
 
     <Button
         android:id="@+id/btnCancelRequest"
@@ -156,10 +127,24 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:width="300dp"
-        android:text="Request "
+        android:text="Cancel Request "
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtStatus" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/msgDonor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp"
+        android:clickable="true"
+        app:backgroundTint="#009688"
+        app:tint="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnCancelRequest"
+        app:srcCompat="@drawable/ic_baseline_send_24" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

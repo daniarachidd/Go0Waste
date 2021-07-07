@@ -44,13 +44,11 @@ public class TestMainDonation extends AppCompatActivity {
     FirebaseFirestore fStore;
     String userId;
     int itemCount = 0;
-    Adapter adapter;
     MainDonationViewAdapter mAdapter;
 
     SearchView searchView;
     TextView txtEmpty;
     Button btnMyItems, btnCategories;
-    FloatingActionButton fabAdd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,10 +97,12 @@ public class TestMainDonation extends AppCompatActivity {
     public void retrieve(){
 
 
-        fStore.collection("Items").whereNotEqualTo("userId", fAuth.getCurrentUser().getUid()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        fStore.collection("Items").whereNotEqualTo("userId", fAuth.getCurrentUser().getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
+                    //if there is no items to be displayed
                     if(task.getResult().isEmpty()) {
                         txtEmpty = findViewById(R.id.txtEmptyItems);
                         itemList.setVisibility(View.GONE);
@@ -110,6 +110,7 @@ public class TestMainDonation extends AppCompatActivity {
                         txtEmpty.setVisibility(View.VISIBLE);
 
                     }
+                    //getting existing documents
                     for (QueryDocumentSnapshot document : task.getResult()) {
                             itemCount ++;
                             titles.add(document.get("title").toString());
@@ -121,7 +122,7 @@ public class TestMainDonation extends AppCompatActivity {
                     }
 
 
-                    //try the new adapter
+                    //set the adapter
                     mAdapter = new MainDonationViewAdapter(getApplicationContext(), titles, images, descriptions, quantities, categories, productId, userIds);
                     GridLayoutManager gLManager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
                     itemList.setLayoutManager(gLManager);
@@ -220,6 +221,9 @@ public class TestMainDonation extends AppCompatActivity {
                 break;
             case R.id.userProfile:
                 startActivity(new Intent(getApplicationContext(), UserProfile.class));
+                break;
+            case R.id.donationRequestsRec:
+                startActivity(new Intent(getApplicationContext(), ReceiverRequestsList.class));
                 break;
             case android.R.id.home:
                 this.finish();

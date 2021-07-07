@@ -7,14 +7,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,7 +44,7 @@ public class TestMyItem extends AppCompatActivity {
     SearchView searchView;
     String userId;
     int itemCount = 0;
-    Adapter adapter;
+    MyItemsAdapter adapter;
     TextView txtEmpty;
     FloatingActionButton fabAdd;
 
@@ -122,7 +120,7 @@ public class TestMyItem extends AppCompatActivity {
                     }
                     //Log.d("TAG", "Total Number of items = " + itemCount);
                     //create adapter
-                    adapter = new Adapter(getApplicationContext(), titles, images , descriptions, quantities, categories, productId, userIds);
+                    adapter = new MyItemsAdapter(getApplicationContext(), titles, images , descriptions, quantities, categories, productId, userIds);
 
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
                     itemList.setLayoutManager(gridLayoutManager);
@@ -216,7 +214,7 @@ public class TestMyItem extends AppCompatActivity {
                                 userIds.add(document.get("userId").toString());
                             }
 
-                            adapter = new Adapter(getApplicationContext(), titles, images , descriptions, quantities, categories, productId, userIds);
+                            adapter = new MyItemsAdapter(getApplicationContext(), titles, images , descriptions, quantities, categories, productId, userIds);
                             GridLayoutManager gLManager = new GridLayoutManager(getApplicationContext(), 2, GridLayoutManager.VERTICAL, false);
                             itemList.setLayoutManager(gLManager);
                             itemList.setAdapter(adapter);

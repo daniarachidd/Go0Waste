@@ -3,7 +3,6 @@ package daniarachid.donation;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -112,9 +110,10 @@ public class MainDonationViewAdapter extends RecyclerView.Adapter<MainDonationVi
             description = itemView.findViewById(R.id.txtDesc);
             quantity = itemView.findViewById(R.id.txtQuan);
             donor = itemView.findViewById(R.id.txtDonor);
-            category = itemView.findViewById(R.id.txtCategory);
+            category = itemView.findViewById(R.id.txtRequestDate);
             image = itemView.findViewById(R.id.donationItemImage);
 
+            //item clicked by the user
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -128,6 +127,7 @@ public class MainDonationViewAdapter extends RecyclerView.Adapter<MainDonationVi
                         item.put("description", descriptions.get(getLayoutPosition()));
                         item.put("quantity", quantities.get(getLayoutPosition()));
                         item.put("category", categories.get(getLayoutPosition()));
+                        item.put("donorId", userIds.get(getLayoutPosition()));
 
                         i.putExtra("item", (Serializable) item);
 

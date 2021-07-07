@@ -19,6 +19,12 @@
         app:showAsAction="never"
         android:iconTint="@color/white" />
 
+    <item android:id="@+id/donationRequestsRec"
+        android:icon="@drawable/exit"
+        android:title="Donation Requests"
+        app:showAsAction="never"
+        android:iconTint="@color/white" />
+
 
 
 

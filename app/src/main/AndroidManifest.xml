@@ -10,8 +10,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Donation">
-        <activity android:name=".Categories"></activity>
+        android:theme="@style/Theme.Donation"
+        >
+
+
+
+        <activity android:name=".ReceiverDonationRequestReview"
+           ></activity>
+        <activity android:name=".ReceiverRequestsList" />
+        <activity android:name=".Categories" />
         <activity android:name=".DonationItemView" />
         <activity android:name=".MyItemView" />
         <activity android:name=".TestMainDonation" />
@@ -19,7 +26,6 @@
         <activity android:name=".EditProfile" />
         <activity android:name=".TestingToolBar" />
         <activity android:name=".Report" />
-        <activity android:name=".MyItems" />
         <activity android:name=".chatActivity">
 
             <!-- Need to modify the audio part -->
@@ -28,7 +34,7 @@
             android:name=".DonorDonationRequest"
             android:label="Donation Requests" />
         <activity
-            android:name=".ReceiverDonationRequest"
+            android:name=".ReceiverDonationRequestDetails"
             android:label="My Donation Requests" />
         <activity
             android:name=".AddDonationItem"
