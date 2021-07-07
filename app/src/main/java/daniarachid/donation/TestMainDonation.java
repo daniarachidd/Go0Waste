@@ -225,6 +225,9 @@ public class TestMainDonation extends AppCompatActivity {
             case R.id.donationRequestsRec:
                 startActivity(new Intent(getApplicationContext(), ReceiverRequestsList.class));
                 break;
+            case R.id.receivedDonationRequests:
+                startActivity(new Intent(getApplicationContext(), DonorRequestsList.class));
+                break;
             case android.R.id.home:
                 this.finish();
                 return true;

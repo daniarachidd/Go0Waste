@@ -12,6 +12,17 @@
         android:title="My Profile"
         app:showAsAction="never"
         android:iconTint="@color/white" />
+    <item android:id="@+id/donationRequestsRec"
+        android:icon="@drawable/exit"
+        android:title="My Donation Requests"
+        app:showAsAction="never"
+        android:iconTint="@color/white" />
+
+    <item android:id="@+id/receivedDonationRequests"
+        android:icon="@drawable/exit"
+        android:title="Received Donation Requests"
+        app:showAsAction="never"
+        android:iconTint="@color/white" />
 
     <item android:id="@+id/signout"
         android:icon="@drawable/exit"
@@ -19,11 +30,8 @@
         app:showAsAction="never"
         android:iconTint="@color/white" />
 
-    <item android:id="@+id/donationRequestsRec"
-        android:icon="@drawable/exit"
-        android:title="Donation Requests"
-        app:showAsAction="never"
-        android:iconTint="@color/white" />
+
+
 
 
 

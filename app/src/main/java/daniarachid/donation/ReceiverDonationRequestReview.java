@@ -57,7 +57,7 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
         mDate = findViewById(R.id.txtRequestDate);
         mStatus = findViewById(R.id.txtStatus);
         cancelRequest = findViewById(R.id.btnCancelRequest);
-        messageDonor = findViewById(R.id.msgDonor);
+        messageDonor = findViewById(R.id.msgReceiver);
 
         // retrieve data from intent
         displayRequestDetails();
@@ -161,6 +161,12 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
                 break;
             case R.id.userProfile:
                 startActivity(new Intent(getApplicationContext(), UserProfile.class));
+                break;
+            case R.id.donationRequestsRec:
+                startActivity(new Intent(getApplicationContext(), ReceiverRequestsList.class));
+                break;
+            case R.id.receivedDonationRequests:
+                startActivity(new Intent(getApplicationContext(), DonorDonationRequest.class));
                 break;
             case android.R.id.home:
                 this.finish();

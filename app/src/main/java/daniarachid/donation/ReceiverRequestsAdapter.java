@@ -2,7 +2,6 @@ package daniarachid.donation;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,19 +25,18 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverRequestsAdapter.ViewHolder> {
     List<String> statusList, titlesList, donorIds, itemIds, requestId;
     LayoutInflater inflater;
+    String userId;
+    FirebaseAuth fAuth;
+
 
     ReceiverRequestsAdapter(Context ctx, List<String> requestId,  List<String> donorIds, List<String> itemIds, List<String> statusList) {
-        //this.titles = titles;
-       // this.images = images;
+
         this.requestId= requestId;
         this.donorIds = donorIds;
         this.itemIds = itemIds;
@@ -51,7 +50,7 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-        View view = inflater.inflate(R.layout.custom_donation_request, parent, false);
+        View view = inflater.inflate(R.layout.custom_receiver_donation_request, parent, false);
         return new ViewHolder(view);
 
     }
@@ -110,12 +109,32 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //request details
-                    Intent i = new Intent(v.getContext(), ReceiverDonationRequestReview.class);
-                    i.putExtra("requestId", requestId.get(getLayoutPosition()));
-                    i.putExtra("title", titlesList.get(getLayoutPosition()));
-                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    v.getContext().startActivity(i);
+
+                    //if receiver request
+                    fAuth = FirebaseAuth.getInstance();
+                    userId = fAuth.getCurrentUser().getUid();
+                    Intent intent;
+                    if(userId.equals(itemIds.get(getLayoutPosition()))) {
+                        //show receiver donation requests
+                         intent = new Intent(v.getContext(), ReceiverDonationRequestReview.class);
+                        intent.putExtra("requestId", requestId.get(getLayoutPosition()));
+                        intent.putExtra("title", titlesList.get(getLayoutPosition()));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        v.getContext().startActivity(intent);
+
+
+                    } else {
+                        //show donor dontion requests
+                        intent = new Intent(v.getContext(), DonorDonationRequest.class);
+                        intent.putExtra("requestId", requestId.get(getLayoutPosition()));
+                        intent.putExtra("title", titlesList.get(getLayoutPosition()));
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        v.getContext().startActivity(intent);
+                    }
+
+
+
+
                 }
             });
         }

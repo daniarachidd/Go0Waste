@@ -10,13 +10,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Donation"
-        >
-
-
-
-        <activity android:name=".ReceiverDonationRequestReview"
-           ></activity>
+        android:theme="@style/Theme.Donation">
+        <activity android:name=".DonorRequestsList" />
+        <activity android:name=".ReceiverDonationRequestReview" />
         <activity android:name=".ReceiverRequestsList" />
         <activity android:name=".Categories" />
         <activity android:name=".DonationItemView" />

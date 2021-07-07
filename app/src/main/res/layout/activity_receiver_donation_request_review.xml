@@ -134,7 +134,7 @@
         app:layout_constraintTop_toBottomOf="@+id/txtStatus" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/msgDonor"
+        android:id="@+id/msgReceiver"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"

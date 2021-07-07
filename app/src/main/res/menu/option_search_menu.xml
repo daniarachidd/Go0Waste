@@ -24,6 +24,12 @@
         app:showAsAction="never"
         android:iconTint="@color/white" />
 
+    <item android:id="@+id/receivedDonationRequests"
+        android:icon="@drawable/exit"
+        android:title="Received Donation Requests"
+        app:showAsAction="never"
+        android:iconTint="@color/white" />
+
     <item android:id="@+id/signout"
         android:icon="@drawable/exit"
         android:title="Sign out"
