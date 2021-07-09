@@ -1,4 +1,4 @@
-package daniarachid.donation;
+package daniarachid.donation.UserAccount;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -36,6 +35,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
 
 public class EditProfile extends AppCompatActivity {

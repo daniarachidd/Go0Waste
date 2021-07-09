@@ -26,5 +26,6 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_chat">Chat</string>
     <string name="goowaste">GoOwaste</string>
+    <string name="title_activity_test_chat">testChat</string>
 
 </resources>

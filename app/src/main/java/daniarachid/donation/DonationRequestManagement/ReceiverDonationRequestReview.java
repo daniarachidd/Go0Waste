@@ -1,4 +1,4 @@
-package daniarachid.donation;
+package daniarachid.donation.DonationRequestManagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,19 +28,25 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import daniarachid.donation.MainActivity;
+import daniarachid.donation.R;
+import daniarachid.donation.UserAccount.UserProfile;
+import daniarachid.donation.chatActivity;
+
 public class ReceiverDonationRequestReview extends AppCompatActivity {
     FirebaseFirestore fStore;
     ImageView imgItem;
     TextView mTitle, mQuantity, mDate, mStatus;
     Button cancelRequest;
-    FloatingActionButton messageDonor;
-    String requestId, title, itemId;
+    FloatingActionButton btnSendMsg;
+    String requestId, title, itemId, token, userId, donorId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +64,7 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
         mDate = findViewById(R.id.txtRequestDate);
         mStatus = findViewById(R.id.txtStatus);
         cancelRequest = findViewById(R.id.btnCancelRequest);
-        messageDonor = findViewById(R.id.msgReceiver);
+        btnSendMsg = findViewById(R.id.btnSendMessage);
 
         // retrieve data from intent
         displayRequestDetails();
@@ -96,15 +103,34 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
             }
         });
 
+        btnSendMsg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // open chat activity + pass (sender, receiver)
+
+                Intent intent = new Intent(getApplicationContext(), chatActivity.class);
+                intent.putExtra("senderId", userId);
+                intent.putExtra("receiverId", donorId);
+                Log.d("CheckMe", donorId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                v.getContext().startActivity(intent);
+
+
+            }
+        });
+
 
 
 
     }
 
+
+
     private void displayRequestDetails() {
         Intent intent = getIntent();
         requestId = intent.getStringExtra("requestId");
         title = intent.getStringExtra("title");
+        donorId = intent.getStringExtra("donorId");
 
 
 

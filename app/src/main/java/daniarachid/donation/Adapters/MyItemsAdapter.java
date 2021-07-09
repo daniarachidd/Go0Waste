@@ -1,8 +1,9 @@
-package daniarachid.donation;
+package daniarachid.donation.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -27,13 +26,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainDonationViewAdapter extends RecyclerView.Adapter<MainDonationViewAdapter.ViewHolder> {
+import daniarachid.donation.DonationManagement.MyItemView;
+import daniarachid.donation.R;
 
-    List<String> titles, images, descriptions, quantities, productId, userIds, categories, donors;
-    //String donor;
+public class MyItemsAdapter extends RecyclerView.Adapter<MyItemsAdapter.ViewHolder> {
+
+    List<String> titles, images, descriptions, quantities, productId, userIds, categories;
     LayoutInflater inflater;
 
-    MainDonationViewAdapter(Context ctx, List<String> titles, List<String> images, List<String> descriptions, List<String> quantities, List<String> categories, List<String> productId, List<String> userId) {
+    public MyItemsAdapter(Context ctx, List<String> titles, List<String> images, List<String> descriptions, List<String> quantities, List<String> categories, List<String> productId, List<String> userId) {
 
         this.descriptions = descriptions;
         this.titles = titles;
@@ -42,44 +43,23 @@ public class MainDonationViewAdapter extends RecyclerView.Adapter<MainDonationVi
         this.categories = categories;
         this.productId = productId;
         this.userIds = userId;
-
         this.inflater = LayoutInflater.from(ctx);
 
     }
-
-
 
     @NonNull
     @NotNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
-
-        View view = inflater.inflate(R.layout.custom_donation_items, parent, false);
+        View view = inflater.inflate(R.layout.custom_my_items, parent, false);
         return new ViewHolder(view);
     }
 
-
-
     @Override
     public void onBindViewHolder(@NonNull @NotNull ViewHolder holder, int position) {
-        //String className = getClass().getName();
-       // Log.d("TAG", "the Class name is: " +className);
         holder.title.setText(titles.get(position));
         holder.description.setText(descriptions.get(position));
         holder.quantity.setText("Quantity " + quantities.get(position));
-        holder.category.setText(categories.get(position));
-
-        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-        DocumentReference dr = fStore.collection("Users").document(userIds.get(position));
-        dr.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                String donorName = documentSnapshot.get("name").toString();
-
-                holder.donor.setText("Donor "+ donorName);
-            }
-        });
-
 
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -88,6 +68,7 @@ public class MainDonationViewAdapter extends RecyclerView.Adapter<MainDonationVi
             @Override
             public void onSuccess(Uri uri) {
                 Picasso.get().load(uri).into(holder.image);
+
             }
         });
 
@@ -99,8 +80,9 @@ public class MainDonationViewAdapter extends RecyclerView.Adapter<MainDonationVi
     }
 
 
+
     public  class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title, description, quantity, donor, category;
+        TextView title, description, quantity;
         ImageView image;
 
 
@@ -109,31 +91,45 @@ public class MainDonationViewAdapter extends RecyclerView.Adapter<MainDonationVi
             title = itemView.findViewById(R.id.txtTitle);
             description = itemView.findViewById(R.id.txtDesc);
             quantity = itemView.findViewById(R.id.txtQuan);
-            donor = itemView.findViewById(R.id.txtDonor);
-            category = itemView.findViewById(R.id.txtRequestDate);
             image = itemView.findViewById(R.id.donationItemImage);
 
-            //item clicked by the user
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //Toast.makeText(v.getContext(), "Item is clicked , " , Toast.LENGTH_SHORT).show();
+                    FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                    String currentUserId = fAuth.getCurrentUser().getUid();
 
-                        Intent i = new Intent(v.getContext(), DonationItemView.class);
+                    //how to get the current selected item?
+                    String uId = userIds.get(getLayoutPosition());
+                    Log.d("CompareID", "Current user Id " + currentUserId +"\n" +
+                            "Item user Id " + uId);
+
+
+                    // if the current userid = uid --> my items
+                    if(uId.equals(currentUserId)) {
+                        //Toast.makeText(v.getContext(), "user id " + uId, Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(v.getContext(), MyItemView.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
+                        //i.putExtra("itemId", productId.get(getLayoutPosition()));
+                        //i.putExtra("itemTitle", titles.get(getLayoutPosition()));
+                        //i.putExtra("itemDesc", descriptions.get(getLayoutPosition()));
+                        //i.putExtra("itemQuantity", quantities.get(getLayoutPosition()));
                         Map<String, Object> item = new HashMap<>();
                         item.put("itemId", productId.get(getLayoutPosition()));
                         item.put("title", titles.get(getLayoutPosition()));
                         item.put("description", descriptions.get(getLayoutPosition()));
                         item.put("quantity", quantities.get(getLayoutPosition()));
                         item.put("category", categories.get(getLayoutPosition()));
-                        item.put("donorId", userIds.get(getLayoutPosition()));
 
                         i.putExtra("item", (Serializable) item);
 
                         //i.putExtra("item")
                         v.getContext().startActivity(i);
+                    } else {
 
+                        //v.getContext().startActivity(new Intent(v.getContext(), Dona));
+                    }
 
                 }
             });

@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentProviderClient;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,14 +19,25 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import daniarachid.donation.DonationManagement.TestMainDonation;
+import daniarachid.donation.UserAccount.SignupActivity;
 
 public class MainActivity extends AppCompatActivity {
     EditText mEmail, mPassword;
     //Button btnLogin;
     ProgressBar progressBar;
     FirebaseAuth fAuth;
+    String token, userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +50,31 @@ public class MainActivity extends AppCompatActivity {
         // if already signed in --> redirect user to main donation activity.
 
 
+
+        //get the token
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                token = instanceIdResult.getToken();
+                saveToken(token);
+            }
+        });
+
+    }
+
+    private void saveToken(String token) {
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+        userId =  fAuth.getCurrentUser().getUid();
+        Map<String, Object> tokens = new HashMap<>();
+        tokens.put("token", token);
+        fStore.collection("Tokens").document(userId).set(tokens).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+                Toast.makeText(getApplicationContext(), "Token added successfully", Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }

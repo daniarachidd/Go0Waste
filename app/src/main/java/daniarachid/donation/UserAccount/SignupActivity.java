@@ -1,4 +1,4 @@
-package daniarachid.donation;
+package daniarachid.donation.UserAccount;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -29,6 +29,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import daniarachid.donation.MainActivity;
+import daniarachid.donation.R;
 
 public class SignupActivity extends AppCompatActivity {
     //mName , mEmail, mPassword, confirm password

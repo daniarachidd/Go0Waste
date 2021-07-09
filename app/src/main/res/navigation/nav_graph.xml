@@ -45,4 +45,8 @@
             android:id="@+id/action_Second2Fragment_to_First2Fragment"
             app:destination="@id/First2Fragment" />
     </fragment>
+    <activity
+        android:id="@+id/donorDonationRequest"
+        android:name="daniarachid.donation.DonationRequestManagement.DonorDonationRequest"
+        android:label="DonorDonationRequest" />
 </navigation>

@@ -1,4 +1,4 @@
-package daniarachid.donation;
+package daniarachid.donation.DonationManagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -33,6 +33,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import daniarachid.donation.MainActivity;
+import daniarachid.donation.R;
+import daniarachid.donation.UserAccount.UserProfile;
 
 public class DonationItemView extends AppCompatActivity {
     String itemId, title, category, quantity, description, userId, strImgUri, donor;

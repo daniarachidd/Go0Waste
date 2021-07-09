@@ -1,4 +1,4 @@
-package daniarachid.donation;
+package daniarachid.donation.DonationManagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -30,6 +30,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import daniarachid.donation.Adapters.MyItemsAdapter;
+import daniarachid.donation.DonationManagement.AddDonationItem;
+import daniarachid.donation.MainActivity;
+import daniarachid.donation.R;
+import daniarachid.donation.UserAccount.UserProfile;
 
 public class TestMyItem extends AppCompatActivity {
 

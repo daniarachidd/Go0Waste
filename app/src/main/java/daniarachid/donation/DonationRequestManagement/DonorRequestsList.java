@@ -1,4 +1,4 @@
-package daniarachid.donation;
+package daniarachid.donation.DonationRequestManagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -27,7 +27,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import daniarachid.donation.Adapters.ReceiverRequestsAdapter;
+import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
+import daniarachid.donation.UserAccount.UserProfile;
 
 public class DonorRequestsList extends AppCompatActivity {
     RecyclerView requestList;

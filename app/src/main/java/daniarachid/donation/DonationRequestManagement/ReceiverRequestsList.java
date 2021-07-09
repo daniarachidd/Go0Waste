@@ -1,10 +1,9 @@
-package daniarachid.donation;
+package daniarachid.donation.DonationRequestManagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -19,9 +18,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -30,6 +26,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import daniarachid.donation.Adapters.ReceiverRequestsAdapter;
+import daniarachid.donation.MainActivity;
+import daniarachid.donation.R;
+import daniarachid.donation.UserAccount.UserProfile;
 
 public class ReceiverRequestsList extends AppCompatActivity {
     RecyclerView requestList;
@@ -132,7 +133,7 @@ public class ReceiverRequestsList extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_search_menu, menu);
+        inflater.inflate(R.menu.option_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.searchIcon);
         return true;
     }

@@ -1,4 +1,4 @@
-package daniarachid.donation;
+package daniarachid.donation.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +28,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+import daniarachid.donation.DonationRequestManagement.DonorDonationRequest;
+import daniarachid.donation.R;
+import daniarachid.donation.DonationRequestManagement.ReceiverDonationRequestReview;
+
 public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverRequestsAdapter.ViewHolder> {
     List<String> statusList, titlesList, donorIds, itemIds, requestId;
     LayoutInflater inflater;
@@ -35,7 +39,7 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
     FirebaseAuth fAuth;
 
 
-    ReceiverRequestsAdapter(Context ctx, List<String> requestId,  List<String> donorIds, List<String> itemIds, List<String> statusList) {
+    public ReceiverRequestsAdapter(Context ctx, List<String> requestId, List<String> donorIds, List<String> itemIds, List<String> statusList) {
 
         this.requestId= requestId;
         this.donorIds = donorIds;
@@ -114,9 +118,9 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
                     fAuth = FirebaseAuth.getInstance();
                     userId = fAuth.getCurrentUser().getUid();
                     Intent intent;
-                    if(userId.equals(itemIds.get(getLayoutPosition()))) {
-                        //show receiver donation requests
-                         intent = new Intent(v.getContext(), ReceiverDonationRequestReview.class);
+                    if(userId.equals(donorIds.get(getLayoutPosition()))) {
+                        //show donor dontion requests
+                        intent = new Intent(v.getContext(), DonorDonationRequest.class);
                         intent.putExtra("requestId", requestId.get(getLayoutPosition()));
                         intent.putExtra("title", titlesList.get(getLayoutPosition()));
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -124,10 +128,13 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
 
 
                     } else {
-                        //show donor dontion requests
-                        intent = new Intent(v.getContext(), DonorDonationRequest.class);
+
+
+                        //show receiver donation requests
+                        intent = new Intent(v.getContext(), ReceiverDonationRequestReview.class);
                         intent.putExtra("requestId", requestId.get(getLayoutPosition()));
                         intent.putExtra("title", titlesList.get(getLayoutPosition()));
+                        intent.putExtra("donorId", donorIds.get(getLayoutPosition()));
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         v.getContext().startActivity(intent);
                     }

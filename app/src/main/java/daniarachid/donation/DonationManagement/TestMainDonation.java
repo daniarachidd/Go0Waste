@@ -1,4 +1,4 @@
-package daniarachid.donation;
+package daniarachid.donation.DonationManagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -21,7 +21,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,6 +30,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import daniarachid.donation.Adapters.MainDonationViewAdapter;
+import daniarachid.donation.Categories;
+import daniarachid.donation.DonationRequestManagement.DonorRequestsList;
+import daniarachid.donation.MainActivity;
+import daniarachid.donation.R;
+import daniarachid.donation.DonationRequestManagement.ReceiverRequestsList;
+import daniarachid.donation.UserAccount.UserProfile;
 
 public class TestMainDonation extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package daniarachid.donation;
+package daniarachid.donation.DonationRequestManagement;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -34,6 +34,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+import daniarachid.donation.MainActivity;
+import daniarachid.donation.R;
+import daniarachid.donation.UserAccount.UserProfile;
+
 public class DonorDonationRequest extends AppCompatActivity {
     FirebaseFirestore fStore;
     ImageView imgItem;
@@ -59,7 +63,7 @@ public class DonorDonationRequest extends AppCompatActivity {
         mStatus = findViewById(R.id.txtStatus);
         btnApprove = findViewById(R.id.btnApprove);
         btnReject = findViewById(R.id.btnReject);
-        messageDonor = findViewById(R.id.msgReceiver);
+        messageDonor = findViewById(R.id.btnSendMessage);
 
         // retrieve data from intent
         displayRequestDetails();
