@@ -64,6 +64,7 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
         //holder.title.setText(titles.get(position));
         //retrieve the titles
 
+
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
         DocumentReference df = fStore.collection("Items").document(itemIds.get(position));
         df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -105,6 +106,7 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
+
             title = itemView.findViewById(R.id.itemName);
             status = itemView.findViewById(R.id.txtStatus);
             requestedItem = itemView.findViewById(R.id.imgRequestItem);
@@ -135,6 +137,8 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
                         intent.putExtra("requestId", requestId.get(getLayoutPosition()));
                         intent.putExtra("title", titlesList.get(getLayoutPosition()));
                         intent.putExtra("donorId", donorIds.get(getLayoutPosition()));
+                        intent.putExtra("userId", userId);
+
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         v.getContext().startActivity(intent);
                     }

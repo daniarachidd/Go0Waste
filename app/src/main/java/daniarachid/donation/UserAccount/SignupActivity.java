@@ -36,6 +36,7 @@ import daniarachid.donation.R;
 public class SignupActivity extends AppCompatActivity {
     //mName , mEmail, mPassword, confirm password
     EditText mName, mEmail, mPassword, mCPassword,mPhoneNo;
+    boolean allowSignUp = false;
 
     Button signUpBtn;
     FirebaseAuth fAuth;
@@ -99,11 +100,13 @@ public class SignupActivity extends AppCompatActivity {
 
         if(password.length() < 8) {
             mPassword.setError("Password must be > 8 characters");
+            return;
         }
 
         if (!password.equals(cPassword)){
             mPassword.setError("Passwords do not match. ");
             mCPassword.setError("Passwords do not match");
+            return;
         }
         // END OF DATA VALIDATION
         //-------------------------

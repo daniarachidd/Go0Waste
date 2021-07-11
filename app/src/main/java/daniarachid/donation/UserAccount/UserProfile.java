@@ -57,7 +57,7 @@ public class UserProfile extends AppCompatActivity {
         mName = findViewById(R.id.txtFullName);
         mEmail  = findViewById(R.id.txtEmail);
         mPhone = findViewById(R.id.txtPhone);
-        mAddress = findViewById(R.id.txtAddress);
+        //mAddress = findViewById(R.id.txtAddress);
         verifyMsg = findViewById(R.id.verifyMsg);
 
         profileImg = findViewById(R.id.imgProfile);

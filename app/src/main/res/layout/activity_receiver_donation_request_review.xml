@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp"
         android:text="Status"
         android:textColor="#605D5D"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -28,7 +28,7 @@
         android:layout_marginTop="20dp"
         android:text="Request Date"
         android:textColor="#605D5D"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -53,9 +53,9 @@
         android:layout_marginEnd="53dp"
         android:layout_marginRight="53dp"
         android:width="200dp"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtQuantity"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/txtQuantity"/>
 
     <TextView
         android:id="@+id/textView13"
@@ -66,7 +66,7 @@
         android:layout_marginTop="20dp"
         android:text="Quantity"
         android:textColor="#605D5D"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -78,6 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/image_description"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <TextView
@@ -89,7 +90,7 @@
         android:layout_marginTop="20dp"
         android:text="Title"
         android:textColor="#605D5D"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgItem" />
 
@@ -102,8 +103,7 @@
         android:layout_marginRight="53dp"
         android:width="200dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgItem" />
 
@@ -116,8 +116,7 @@
         android:layout_marginRight="53dp"
         android:width="200dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
 
@@ -128,7 +127,7 @@
         android:layout_marginTop="40dp"
         android:width="300dp"
         android:text="Cancel Request "
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtStatus" />
@@ -142,6 +141,7 @@
         android:layout_marginRight="20dp"
         android:clickable="true"
         app:backgroundTint="#009688"
+        android:contentDescription="@string/image_description"
         app:tint="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnCancelRequest"

@@ -93,7 +93,7 @@ public class DonorDonationRequest extends AppCompatActivity {
                 });
 
                 finish();
-                startActivity(new Intent(getApplicationContext(), DonorRequestsList.class));
+                startActivity(new Intent(getApplicationContext(), TestDonorRequestList.class));
 
                 //notify user
             }
@@ -124,7 +124,7 @@ public class DonorDonationRequest extends AppCompatActivity {
                 });
 
                 finish();
-                startActivity(new Intent(getApplicationContext(), DonorRequestsList.class));
+                startActivity(new Intent(getApplicationContext(), TestDonorRequestList.class));
                 //notify user
 
             }
@@ -196,7 +196,7 @@ public class DonorDonationRequest extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), UserProfile.class));
                 break;
             case R.id.donationRequestsRec:
-                startActivity(new Intent(getApplicationContext(), ReceiverRequestsList.class));
+                startActivity(new Intent(getApplicationContext(), TestReceiverRequestList.class));
                 break;
             case R.id.receivedDonationRequests:
                 startActivity(new Intent(getApplicationContext(), DonorDonationRequest.class));

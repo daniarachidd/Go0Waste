@@ -47,21 +47,28 @@ public class MainActivity extends AppCompatActivity {
         mPassword = findViewById(R.id.txtPassword);
         progressBar = findViewById(R.id.progressBar2);
         fAuth = FirebaseAuth.getInstance();
-        // if already signed in --> redirect user to main donation activity.
+
+        // check if user is already logged in
+        if(fAuth.getCurrentUser() != null ) {
+            startActivity(new Intent(getApplicationContext(), TestMainDonation.class));
+            finish();
+        }
 
 
 
+        // THIS SHOULD BE MOVED TO SIGN UP ACTIVITY
         //get the token
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
-                token = instanceIdResult.getToken();
-                saveToken(token);
+              //  token = instanceIdResult.getToken();
+                //saveToken(token);
             }
         });
 
     }
 
+    /*
     private void saveToken(String token) {
         FirebaseAuth fAuth = FirebaseAuth.getInstance();
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
@@ -78,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+     */
 
     public void resetPassword(View view) {
         // GET USER EMAIL

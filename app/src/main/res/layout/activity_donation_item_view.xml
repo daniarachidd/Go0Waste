@@ -13,9 +13,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:text="Status"
+        android:text="@string/status"
         android:textColor="#605D5D"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -26,9 +26,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:text="Category"
+        android:text="@string/category"
         android:textColor="#605D5D"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -39,9 +39,8 @@
         android:layout_marginStart="75dp"
         android:layout_marginLeft="75dp"
         android:layout_marginTop="20dp"
-        android:text="TextView"
         android:textColor="#009688"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView22"
         app:layout_constraintTop_toBottomOf="@+id/txtRequestDate" />
 
@@ -53,9 +52,9 @@
         android:layout_marginEnd="55dp"
         android:layout_marginRight="55dp"
         android:width="200dp"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtQuantity"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/txtQuantity" />
 
     <TextView
         android:id="@+id/textView13"
@@ -64,9 +63,9 @@
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="20dp"
-        android:text="Quantity"
+        android:text="@string/quantity"
         android:textColor="#605D5D"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -78,6 +77,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/image_description"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <TextView
@@ -89,7 +89,7 @@
         android:layout_marginTop="20dp"
         android:text="Title"
         android:textColor="#605D5D"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgItem" />
 
@@ -103,7 +103,7 @@
         android:height="50dp"
         android:text="Description"
         android:textColor="#605D5D"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -116,8 +116,7 @@
         android:layout_marginRight="55dp"
         android:width="200dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgItem" />
 
@@ -132,23 +131,9 @@
         android:height="50dp"
         android:ems="10"
         android:maxLines="3"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
-
-    <TextView
-        android:id="@+id/txtQuantity"
-        android:layout_width="200dp"
-        android:layout_height="28dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="55dp"
-        android:layout_marginRight="55dp"
-        android:width="200dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:textSize="18dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtDesc" />
 
     <Button
         android:id="@+id/btnCancelRequest"
@@ -157,9 +142,51 @@
         android:layout_marginTop="40dp"
         android:width="300dp"
         android:text="Request "
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtStatus" />
+
+    <TextView
+        android:id="@+id/txtQuantity"
+        android:layout_width="36dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="70dp"
+        android:layout_marginLeft="70dp"
+        android:layout_marginTop="20dp"
+        android:width="200dp"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/textView13"
+        app:layout_constraintTop_toBottomOf="@+id/txtDesc" />
+
+    <TextView
+        android:id="@+id/pickQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="20dp"
+        android:text="Select"
+        android:textColor="@color/teal_700"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="@id/txtQuantity"
+        app:layout_constraintStart_toEndOf="@+id/txtQuantity"
+        app:layout_constraintTop_toBottomOf="@id/txtDesc" />
+
+    <TextView
+        android:id="@+id/txtSelectedQuantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginRight="55dp"
+        android:textColor="#030404"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/pickQuantity"
+        app:layout_constraintTop_toBottomOf="@+id/txtDesc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

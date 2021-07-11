@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,30 +34,32 @@ import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
 import daniarachid.donation.UserAccount.UserProfile;
 
-public class DonorRequestsList extends AppCompatActivity {
-    RecyclerView requestList;
+public class TestReceiverRequestList extends AppCompatActivity {
+    RecyclerView requestList, penRequestList;
     List<String> statusList, requestIds, itemIds, images, donorIds, quantity;
+    List<String> penStatusList, penRequestIds, penItemIds, penImages, penDonorIds, penQuantity;
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
     int itemCount = 0;
-    ReceiverRequestsAdapter adapter;
+    ReceiverRequestsAdapter adapter, penAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_donor_requests_list);
+        setContentView(R.layout.activity_test_receiver_request_list);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         //initialize views
-        requestList = findViewById(R.id.donationRequestsRec);
+        penRequestList = findViewById(R.id.pendingRequests);
+        requestList = findViewById(R.id.respondedRequests);
 
         //initialize firebase connections
         fAuth = FirebaseAuth.getInstance();
         fStore = FirebaseFirestore.getInstance();
 
         //initialize arraylists
-
+        //titleList = new ArrayList<>();
         requestIds = new ArrayList<>();
         itemIds = new ArrayList<>();
         images = new ArrayList<>();
@@ -63,16 +67,21 @@ public class DonorRequestsList extends AppCompatActivity {
         quantity = new ArrayList<>();
         statusList = new ArrayList<>();
 
+        penRequestIds = new ArrayList<>();
+        penItemIds = new ArrayList<>();
+        penImages = new ArrayList<>();
+        penDonorIds = new ArrayList<>();
+        penQuantity = new ArrayList<>();
+        penStatusList = new ArrayList<>();
 
-
-        //display requests
         displayRequests();
     }
 
-    private void displayRequests() {
-        String donorId = fAuth.getCurrentUser().getUid();
 
-        fStore.collection("DonationRequest").whereEqualTo("donorId", donorId).get()
+    private void displayRequests() {
+        String receiverId = fAuth.getCurrentUser().getUid();
+
+        fStore.collection("DonationRequest").whereEqualTo("receiverId", receiverId).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
@@ -88,21 +97,37 @@ public class DonorRequestsList extends AppCompatActivity {
 
                             //adding the requests to array lists
                             for (QueryDocumentSnapshot doc : task.getResult()) {
-                                itemCount ++;
-                                requestIds.add(doc.getId());
-                                itemIds.add(doc.get("itemId").toString());
-                                donorIds.add(doc.get("donorId").toString());
-                                quantity.add(doc.get("quantity").toString());
-                                statusList.add(doc.get("requestStatus").toString());
+
+                                if (doc.getString("requestStatus").equals("Requested")) {
+                                    penRequestIds.add(doc.getId());
+                                    penItemIds.add(doc.get("itemId").toString());
+                                    penDonorIds.add(doc.get("donorId").toString());
+                                    penQuantity.add(doc.get("quantity").toString());
+                                    penStatusList.add(doc.get("requestStatus").toString());
+
+                                } else if (doc.getString("requestStatus").equals("Approved") ||
+                                        doc.getString("requestStatus").equals("Rejected")){
+                                    itemCount ++;
+                                    requestIds.add(doc.getId());
+                                    itemIds.add(doc.get("itemId").toString());
+                                    donorIds.add(doc.get("donorId").toString());
+                                    quantity.add(doc.get("quantity").toString());
+                                    statusList.add(doc.get("requestStatus").toString());
+                                }
+
 
 
                             }
 
 
                             //attach with the adapter
+                            penAdapter = new ReceiverRequestsAdapter(getApplicationContext(), penRequestIds, penDonorIds, penItemIds, penStatusList);
                             adapter = new ReceiverRequestsAdapter(getApplicationContext(), requestIds, donorIds, itemIds, statusList);
 
                             GridLayoutManager gLManager = new GridLayoutManager(getApplicationContext(), 1,
+                                    GridLayoutManager.VERTICAL, false);
+
+                            GridLayoutManager penGLManager = new GridLayoutManager(getApplicationContext(), 1,
                                     GridLayoutManager.VERTICAL, false);
                             //LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
 
@@ -110,6 +135,30 @@ public class DonorRequestsList extends AppCompatActivity {
                             requestList.setLayoutManager(gLManager);
                             requestList.setAdapter(adapter);
 
+                            penRequestList.setLayoutManager(penGLManager);
+                            penRequestList.setAdapter(penAdapter);
+
+
+
+                            //checking if there are no requests
+                            if (penItemIds.size() == 0 ) {
+                                TextView resTextView = findViewById(R.id.txtPending);
+                                resTextView.setVisibility(View.GONE);
+                                penRequestList.setVisibility(View.GONE);
+                            }
+                            if (itemIds.size() == 0) {
+                                TextView resTextView = findViewById(R.id.txtRequests);
+                                resTextView.setVisibility(View.GONE);
+                                requestList.setVisibility(View.GONE);
+                            }
+
+                            if (itemIds.size() == 0 && penItemIds.size() == 0) {
+                                TextView pending = findViewById(R.id.txtPending);
+                                TextView resTextView = findViewById(R.id.txtRequests);
+                                pending.setText("There are no requests");
+                                resTextView.setVisibility(View.GONE);
+
+                            }
 
 
                         } else {
@@ -131,7 +180,7 @@ public class DonorRequestsList extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_search_menu, menu);
+        inflater.inflate(R.menu.option_menu, menu);
         MenuItem menuItem = menu.findItem(R.id.searchIcon);
         return true;
     }
@@ -146,7 +195,7 @@ public class DonorRequestsList extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), UserProfile.class));
                 break;
             case R.id.donationRequestsRec:
-                startActivity(new Intent(getApplicationContext(), ReceiverRequestsList.class));
+                startActivity(new Intent(getApplicationContext(), TestReceiverRequestList.class));
                 break;
             case android.R.id.home:
                 this.finish();

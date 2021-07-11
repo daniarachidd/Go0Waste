@@ -13,14 +13,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -34,18 +39,23 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import daniarachid.donation.DonationRequestManagement.QuantityPickerDialog;
+import daniarachid.donation.DonationRequestManagement.TestReceiverRequestList;
 import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
+import daniarachid.donation.DonationRequestManagement.TestDonorRequestList;
 import daniarachid.donation.UserAccount.UserProfile;
 
-public class DonationItemView extends AppCompatActivity {
+public class DonationItemView extends AppCompatActivity implements  NumberPicker.OnValueChangeListener{
     String itemId, title, category, quantity, description, userId, strImgUri, donor;
     Uri imageUri;
     ImageView itemImage, imgDelete;
-    TextView mTitle, mDesc, mQuan, mStatus, mDonor, mCategory;
+    TextView mTitle, mDesc, mQuan, mStatus, mPick, mCategory, mSelectedQuantity;
+    //NumberPicker quantityPicker;
     Button btnRequest;
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
+    int selectedQuantity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +86,25 @@ public class DonationItemView extends AppCompatActivity {
         mCategory = findViewById(R.id.txtRequestDate);
         mStatus = findViewById(R.id.txtStatus);
         btnRequest = findViewById(R.id.btnCancelRequest);
+       // quantityPicker = findViewById(R.id.quantityPicker);
+        mPick = findViewById(R.id.pickQuantity);
+        mSelectedQuantity = findViewById(R.id.txtSelectedQuantity);
+
+        int quantityVal = Integer.parseInt(quantity);
+        mPick.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //create the dialog
+                showNumberPicker(mPick);
+
+            }
+        });
 
 
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 requestItem(btnRequest);
             }
         });
@@ -90,14 +114,17 @@ public class DonationItemView extends AppCompatActivity {
         showDetails();
     }
 
+
     private void requestItem(View v) {
+
+      // int selectedQuantity = quantityPicker.getValue();
         // add a donation request to firebase
         //userId, donorId, donationRequestId, itemId, quantity, date
         Map<String, Object> donationRequest = new HashMap<>();
         donationRequest.put("receiverId", fAuth.getCurrentUser().getUid());
         donationRequest.put("donorId", donor);
         donationRequest.put("itemId", itemId);
-        donationRequest.put("quantity", quantity);
+        donationRequest.put("quantity", selectedQuantity);
 
         Date date = Calendar.getInstance().getTime();
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
@@ -110,6 +137,7 @@ public class DonationItemView extends AppCompatActivity {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(getApplicationContext(), "Request is sent", Toast.LENGTH_SHORT).show();
+                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -119,87 +147,14 @@ public class DonationItemView extends AppCompatActivity {
         });
 
 
+
         //disable request button
         btnRequest.setEnabled(false);
         btnRequest.setText("Requested");
 
-        //SEND NOTIFICATION TO THE DONOR
-        //MIGHT NEED TO CHECK THE QUANTITY
 
 
 
-
-
-
-        /**
-        int quan = Integer.parseInt(quantity);
-        if(quan > 1) {
-            //enter quantity required
-
-            EditText mQuantity = new EditText(v.getContext());
-            mQuantity.setInputType(InputType.TYPE_CLASS_NUMBER);
-            AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
-            passwordResetDialog.setTitle("Donation Request");
-            passwordResetDialog.setMessage("Enter the quantity you want to request ");
-
-
-            passwordResetDialog.setView(mQuantity);
-
-            mQuantity.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    int requiredQuantity = Integer.parseInt(mQuantity.getText().toString());
-
-                    if (requiredQuantity > quan || requiredQuantity < quan) {
-                        //passwordResetDialog.setMessage("Available quantity is " + quantity);
-                        //mQuantity.setFocusable(true);
-                        //passwordResetDialog.setMultiChoiceItems()
-                      //  multichoice
-                    }
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-
-
-                }
-            });
-            passwordResetDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-
-
-                    Toast.makeText(getApplicationContext(), "Done", Toast.LENGTH_SHORT).show();
-                }
-            });
-            passwordResetDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Toast.makeText(getApplicationContext(), "Cancel", Toast.LENGTH_SHORT).show();
-                }
-            });
-            passwordResetDialog.create().show();
-
-
-
-            //Toast.makeText(this, quantity, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Request has been sent to donor", Toast.LENGTH_SHORT).show();
-        }
-            **/
-
-        //
-            //ask user how many to request
-
-        //what if quantity > 1>
 
     }
 
@@ -220,10 +175,15 @@ public class DonationItemView extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.signout: signout();
                 break;
-            case R.id.search: //search
-                break;
+
             case R.id.userProfile:
                 startActivity(new Intent(getApplicationContext(), UserProfile.class));
+                break;
+            case R.id.donationRequestsRec:
+                startActivity(new Intent(getApplicationContext(), TestReceiverRequestList.class));
+                break;
+            case R.id.receivedDonationRequests:
+                startActivity(new Intent(getApplicationContext(), TestDonorRequestList.class));
                 break;
             case android.R.id.home:
                 this.finish();
@@ -232,27 +192,7 @@ public class DonationItemView extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode== 1000) {
-            if(resultCode == Activity.RESULT_OK) {
-                // GET URI OF IMAGE
-                imageUri = data.getData();
-                itemImage.setImageURI(imageUri);
-                strImgUri = imageUri.toString();
-                //profileImg.setImageURI(imageUri);
 
-                // UPLOAD IMAGE TO FIREBASE
-               // uploadImageToFirebase(imageUri);
-
-            }
-
-        }
-    }
-
-    **/
     private void showDetails() {
         mTitle.setText(title);
         mDesc.setText(description);
@@ -260,6 +200,42 @@ public class DonationItemView extends AppCompatActivity {
         mStatus.setText("Available");
         mCategory.setText(category);
 
+
+        if (quantity.equals("1")) {
+            mPick.setVisibility(View.GONE);
+            mSelectedQuantity.setVisibility(View.GONE);
+        }
+
+        //check if the item is already requested
+        fStore.collection("DonationRequest").whereEqualTo("receiverId", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+               //if the found item id = the clicked item id
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    if (itemId.equals(doc.getString("itemId"))) {
+
+                        mPick.setVisibility(View.GONE);
+                        mSelectedQuantity.setVisibility(View.GONE);
+                        btnRequest.setEnabled(false);
+                        btnRequest.setText("Requested");
+                    }
+                }
+            }
+        });
+
+        //if the item is the user's item
+        fStore.collection("Items").whereEqualTo("userId", userId).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
+                for (QueryDocumentSnapshot doc : task.getResult()) {
+                    if(donor.equals(doc.getString("userId"))) {
+                        btnRequest.setVisibility(View.GONE);
+                        mPick.setVisibility(View.GONE);
+                        mSelectedQuantity.setVisibility(View.GONE);
+                    }
+                }
+            }
+        });
 
         //display pic
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -272,5 +248,25 @@ public class DonationItemView extends AppCompatActivity {
 
         });
 
+    }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+        //get the value
+        selectedQuantity = picker.getValue();
+        mSelectedQuantity.setText(selectedQuantity);
+
+    }
+
+    public void showNumberPicker(View view){
+        //Log.d("CheckMe", quantity);
+        int max = Integer.parseInt(quantity);
+        QuantityPickerDialog newFragment = new QuantityPickerDialog(1, max);
+        newFragment.setValueChangeListener(this);
+
+        newFragment.show(getSupportFragmentManager(), "Quantity Picker");
+
+        //newFragment.setValueChangeListener(this);
+        //newFragment.show(getSupportFragmentManager(), "time picker");
     }
 }

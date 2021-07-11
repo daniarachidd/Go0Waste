@@ -38,7 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
 import daniarachid.donation.UserAccount.UserProfile;
-import daniarachid.donation.chatActivity;
+import daniarachid.donation.Messaging.chatActivity;
 
 public class ReceiverDonationRequestReview extends AppCompatActivity {
     FirebaseFirestore fStore;
@@ -84,7 +84,7 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
                         DocumentReference docRef = fStore.collection("DonationRequest").document(requestId);
                         docRef.delete();
                         Toast.makeText(ReceiverDonationRequestReview.this, "Your request has been canceled", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), ReceiverRequestsList.class));
+                        startActivity(new Intent(getApplicationContext(), TestReceiverRequestList.class));
                         finish();
                     }
                 });
@@ -109,9 +109,11 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
                 // open chat activity + pass (sender, receiver)
 
                 Intent intent = new Intent(getApplicationContext(), chatActivity.class);
+                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                userId = fAuth.getCurrentUser().getUid();
                 intent.putExtra("senderId", userId);
                 intent.putExtra("receiverId", donorId);
-                Log.d("CheckMe", donorId);
+                //Log.d("CheckMe", donorId);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 v.getContext().startActivity(intent);
 
@@ -189,7 +191,7 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), UserProfile.class));
                 break;
             case R.id.donationRequestsRec:
-                startActivity(new Intent(getApplicationContext(), ReceiverRequestsList.class));
+                startActivity(new Intent(getApplicationContext(), TestReceiverRequestList.class));
                 break;
             case R.id.receivedDonationRequests:
                 startActivity(new Intent(getApplicationContext(), DonorDonationRequest.class));

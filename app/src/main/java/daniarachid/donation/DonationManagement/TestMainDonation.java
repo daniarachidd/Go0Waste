@@ -33,10 +33,10 @@ import java.util.List;
 
 import daniarachid.donation.Adapters.MainDonationViewAdapter;
 import daniarachid.donation.Categories;
-import daniarachid.donation.DonationRequestManagement.DonorRequestsList;
+import daniarachid.donation.DonationRequestManagement.TestReceiverRequestList;
 import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
-import daniarachid.donation.DonationRequestManagement.ReceiverRequestsList;
+import daniarachid.donation.DonationRequestManagement.TestDonorRequestList;
 import daniarachid.donation.UserAccount.UserProfile;
 
 public class TestMainDonation extends AppCompatActivity {
@@ -52,6 +52,7 @@ public class TestMainDonation extends AppCompatActivity {
     String userId;
     int itemCount = 0;
     MainDonationViewAdapter mAdapter;
+
 
     SearchView searchView;
     TextView txtEmpty;
@@ -101,10 +102,11 @@ public class TestMainDonation extends AppCompatActivity {
     }
 
 
+
     public void retrieve(){
 
-
-        fStore.collection("Items").whereNotEqualTo("userId", fAuth.getCurrentUser().getUid()).get()
+//.whereNotEqualTo("userId", fAuth.getCurrentUser().getUid()).
+        fStore.collection("Items").get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
@@ -230,10 +232,10 @@ public class TestMainDonation extends AppCompatActivity {
                 startActivity(new Intent(getApplicationContext(), UserProfile.class));
                 break;
             case R.id.donationRequestsRec:
-                startActivity(new Intent(getApplicationContext(), ReceiverRequestsList.class));
+                startActivity(new Intent(getApplicationContext(), TestReceiverRequestList.class));
                 break;
             case R.id.receivedDonationRequests:
-                startActivity(new Intent(getApplicationContext(), DonorRequestsList.class));
+                startActivity(new Intent(getApplicationContext(), TestDonorRequestList.class));
                 break;
             case android.R.id.home:
                 this.finish();

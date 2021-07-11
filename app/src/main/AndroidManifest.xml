@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Donation">
-        <activity android:name=".DonationRequestManagement.DonorRequestsList" />
+        <activity android:name=".DonationRequestManagement.TestReceiverRequestList" />
+        <activity android:name=".DonationRequestManagement.TestDonorRequestList" />
         <activity android:name=".DonationRequestManagement.ReceiverDonationRequestReview" />
-        <activity android:name=".DonationRequestManagement.ReceiverRequestsList" />
         <activity android:name=".Categories" />
         <activity android:name=".DonationManagement.DonationItemView" />
         <activity android:name=".DonationManagement.MyItemView" />
@@ -21,7 +21,7 @@
         <activity android:name=".DonationManagement.TestMyItem" />
         <activity android:name=".UserAccount.EditProfile" />
         <activity android:name=".Report" />
-        <activity android:name=".chatActivity">
+        <activity android:name=".Messaging.chatActivity">
 
             <!-- Need to modify the audio part -->
         </activity>
@@ -50,16 +50,16 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
         <service
-            android:exported="true"
+            android:name=".Notification.FirebaseMessaging"
             android:enabled="true"
-            android:name=".Notification.FirebaseMessaging">
-
+            android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGIN_EVENT"></action>
+                <action android:name="com.google.firebase.MESSAGIN_EVENT" />
             </intent-filter>
-
         </service>
+
         <receiver android:name=".Notification.NotificationService" />
     </application>
 

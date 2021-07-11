@@ -27,5 +27,10 @@
     <string name="title_activity_chat">Chat</string>
     <string name="goowaste">GoOwaste</string>
     <string name="title_activity_test_chat">testChat</string>
+    <string name="chat_message_hint">Enter your message</string>
+    <string name="image_description">Image description</string>
+    <string name="status">Status</string>
+    <string name="category">Category</string>
+    <string name="quantity">Quantity</string>
 
 </resources>

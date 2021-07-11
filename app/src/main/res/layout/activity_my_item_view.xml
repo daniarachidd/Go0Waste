@@ -14,7 +14,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
         android:text="Status"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
@@ -26,7 +26,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
         android:text="Category"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
@@ -39,7 +39,7 @@
         android:layout_marginTop="28dp"
         android:text="TextView"
         android:textColor="#009688"
-        android:textSize="18dp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/textView22"
         app:layout_constraintTop_toBottomOf="@+id/spinCategory" />
 
@@ -51,7 +51,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="30dp"
         android:text="Quantity"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -73,7 +73,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="18dp"
         android:text="Title"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgItem" />
 
@@ -85,7 +85,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="33dp"
         android:text="Description"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -176,6 +176,7 @@
         android:layout_marginRight="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnCancel"
+        android:contentDescription="@string/image_description"
         app:srcCompat="@android:drawable/ic_menu_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
