@@ -30,6 +30,11 @@
         app:showAsAction="never"
         android:iconTint="@color/white" />
 
+    <item android:id="@+id/chat"
+        android:title="Messages"
+        app:showAsAction="never"
+        android:iconTint="@color/white" />
+
     <item android:id="@+id/signout"
         android:icon="@drawable/exit"
         android:title="Sign out"

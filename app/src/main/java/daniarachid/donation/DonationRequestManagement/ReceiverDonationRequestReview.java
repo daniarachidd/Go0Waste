@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,7 +37,7 @@ import org.jetbrains.annotations.NotNull;
 import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
 import daniarachid.donation.UserAccount.UserProfile;
-import daniarachid.donation.Messaging.chatActivity;
+import daniarachid.donation.Messaging.Conversation;
 
 public class ReceiverDonationRequestReview extends AppCompatActivity {
     FirebaseFirestore fStore;
@@ -108,7 +107,7 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
             public void onClick(View v) {
                 // open chat activity + pass (sender, receiver)
 
-                Intent intent = new Intent(getApplicationContext(), chatActivity.class);
+                Intent intent = new Intent(getApplicationContext(), Conversation.class);
                 FirebaseAuth fAuth = FirebaseAuth.getInstance();
                 userId = fAuth.getCurrentUser().getUid();
                 intent.putExtra("senderId", userId);

@@ -48,12 +48,14 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar2);
         fAuth = FirebaseAuth.getInstance();
 
+        /**
         // check if user is already logged in
         if(fAuth.getCurrentUser() != null ) {
             startActivity(new Intent(getApplicationContext(), TestMainDonation.class));
             finish();
         }
 
+         **/
 
 
         // THIS SHOULD BE MOVED TO SIGN UP ACTIVITY

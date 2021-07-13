@@ -47,15 +47,14 @@ import daniarachid.donation.DonationRequestManagement.TestDonorRequestList;
 import daniarachid.donation.UserAccount.UserProfile;
 
 public class DonationItemView extends AppCompatActivity implements  NumberPicker.OnValueChangeListener{
-    String itemId, title, category, quantity, description, userId, strImgUri, donor;
-    Uri imageUri;
-    ImageView itemImage, imgDelete;
+    String itemId, title, category, quantity, description, userId, donor;
+    ImageView itemImage;
     TextView mTitle, mDesc, mQuan, mStatus, mPick, mCategory, mSelectedQuantity;
-    //NumberPicker quantityPicker;
     Button btnRequest;
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
     int selectedQuantity;
+    int quantityVal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +69,6 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
         category = (String) item.get("category");
         quantity = (String) item.get("quantity");
         description = (String) item.get("description");
-        //donor = (String) item.get("donor");
-
         donor = (String) item.get("donorId");
 
 
@@ -86,11 +83,13 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
         mCategory = findViewById(R.id.txtRequestDate);
         mStatus = findViewById(R.id.txtStatus);
         btnRequest = findViewById(R.id.btnCancelRequest);
-       // quantityPicker = findViewById(R.id.quantityPicker);
         mPick = findViewById(R.id.pickQuantity);
-        mSelectedQuantity = findViewById(R.id.txtSelectedQuantity);
+        mSelectedQuantity = findViewById(R.id.txtSelectedQuan);
 
-        int quantityVal = Integer.parseInt(quantity);
+         quantityVal = Integer.parseInt(quantity);
+
+
+        showDetails();
         mPick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,15 +110,14 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
 
 
 
-        showDetails();
+
     }
 
 
     private void requestItem(View v) {
 
-      // int selectedQuantity = quantityPicker.getValue();
         // add a donation request to firebase
-        //userId, donorId, donationRequestId, itemId, quantity, date
+
         Map<String, Object> donationRequest = new HashMap<>();
         donationRequest.put("receiverId", fAuth.getCurrentUser().getUid());
         donationRequest.put("donorId", donor);
@@ -201,9 +199,11 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
         mCategory.setText(category);
 
 
-        if (quantity.equals("1")) {
+
+        if (quantityVal == 1) {
             mPick.setVisibility(View.GONE);
             mSelectedQuantity.setVisibility(View.GONE);
+            selectedQuantity = 1;
         }
 
         //check if the item is already requested
@@ -252,21 +252,21 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
 
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-        //get the value
+
         selectedQuantity = picker.getValue();
-        mSelectedQuantity.setText(selectedQuantity);
+        mSelectedQuantity.setVisibility(View.VISIBLE);
+        quantity = String.valueOf(selectedQuantity);
+        mSelectedQuantity.setText(quantity);
+
 
     }
 
     public void showNumberPicker(View view){
-        //Log.d("CheckMe", quantity);
-        int max = Integer.parseInt(quantity);
+
+        int max = quantityVal;
         QuantityPickerDialog newFragment = new QuantityPickerDialog(1, max);
         newFragment.setValueChangeListener(this);
-
         newFragment.show(getSupportFragmentManager(), "Quantity Picker");
 
-        //newFragment.setValueChangeListener(this);
-        //newFragment.show(getSupportFragmentManager(), "time picker");
     }
 }

@@ -20,6 +20,10 @@ public class MessageViewModel extends ViewModel implements MessageRepository.OnM
 
         repo.getAllMessages(receiverId);
     }
+    public void deleteMessageFromFireStore(String receiverId) {
+
+        repo.deleteAllMessages(receiverId);
+    }
 
     public void resetAll() {
         mutableLiveData.postValue(null);

@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import daniarachid.donation.MainActivity;
+import daniarachid.donation.Messaging.Conversation;
 import daniarachid.donation.R;
 import daniarachid.donation.UserAccount.UserProfile;
 
@@ -129,6 +130,20 @@ public class DonorDonationRequest extends AppCompatActivity {
 
             }
         });
+
+        messageDonor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Conversation.class);
+                FirebaseAuth fAuth = FirebaseAuth.getInstance();
+                String userId = fAuth.getCurrentUser().getUid();
+                intent.putExtra("senderId", userId);
+                intent.putExtra("receiverId", receiverId);
+                //Log.d("CheckMe", donorId);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     private void displayRequestDetails() {
@@ -190,8 +205,7 @@ public class DonorDonationRequest extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.signout: signout();
                 break;
-            case R.id.search: //search
-                break;
+
             case R.id.userProfile:
                 startActivity(new Intent(getApplicationContext(), UserProfile.class));
                 break;

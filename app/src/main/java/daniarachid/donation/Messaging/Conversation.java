@@ -1,6 +1,7 @@
 package daniarachid.donation.Messaging;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -21,11 +22,14 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -39,33 +43,49 @@ import daniarachid.donation.Adapters.MessageAdapter;
 import daniarachid.donation.DonationRequestManagement.TestReceiverRequestList;
 import daniarachid.donation.Entity.MessageModel;
 import daniarachid.donation.MainActivity;
+import daniarachid.donation.Notification.APISERVICE;
+import daniarachid.donation.Notification.Client;
+import daniarachid.donation.Notification.Data;
+import daniarachid.donation.Notification.Response;
+import daniarachid.donation.Notification.Sender;
+import daniarachid.donation.Notification.Token;
 import daniarachid.donation.R;
 import daniarachid.donation.UserAccount.UserProfile;
+import retrofit2.Call;
+import retrofit2.Callback;
 
-public class chatActivity extends AppCompatActivity {
+public class Conversation extends AppCompatActivity {
     String senderId, receiverId, message, userName;
+
     EditText mMessage;
     ImageView send;
+
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
     ActionBar actionBar;
     RecyclerView messagesRec;
     MessageViewModel viewModel;
     MessageAdapter adapter;
+    String nameOfSender, token, userIdForToken;
+    APISERVICE apiservice;
+    boolean notify = false;
 
-    public chatActivity() {}
+
+
+    public Conversation() {}
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_conversation);
 
+        apiservice = Client.getRetrofit("https://fcm.googleapis.com/").create(APISERVICE.class);
         //get the user name
         Intent intent = getIntent();
         fAuth = FirebaseAuth.getInstance();
-        //senderId = intent.getStringExtra("senderId");
+
         receiverId = intent.getStringExtra("receiverId");
 
 
@@ -93,20 +113,15 @@ public class chatActivity extends AppCompatActivity {
 
 
         senderId = intent.getStringExtra("senderId");
-        Log.d("CheckMe", "Sender id from intent : " + senderId);
+
 
         mMessage = findViewById(R.id.txtMessage);
         send = findViewById(R.id.send);
-        adapter = new MessageAdapter();
+        adapter = new MessageAdapter(senderId, receiverId);
         messagesRec = findViewById(R.id.messagesRec);
         LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
         llm.setStackFromEnd(true);
         messagesRec.setLayoutManager(llm);
-
-        //viewModel
-        //Bundle extra = getIntent().getExtras();
-
-
 
 
 
@@ -126,9 +141,11 @@ public class chatActivity extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                notify = true;
                 message = mMessage.getText().toString();
                 if (!message.isEmpty()) {
                     sendMessage(senderId, receiverId, message);
+                    mMessage.setText("");
 
                 }
 
@@ -137,7 +154,6 @@ public class chatActivity extends AppCompatActivity {
 
 
 
-        //messagesRec.setAdapter(adapter);
 
 
     }
@@ -150,8 +166,9 @@ public class chatActivity extends AppCompatActivity {
     }
 
     private void sendMessage(String senderId, String receiverId, String message) {
+
         //send the message
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
         Date date = new Date(System.currentTimeMillis());
         String currentTime = formatter.format(date);
 
@@ -168,6 +185,60 @@ public class chatActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Message Sent", Toast.LENGTH_SHORT).show();
             }
         });
+
+        fStore.collection("Users").document(senderId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+
+                nameOfSender = documentSnapshot.getString("name");
+                if (notify) {
+                    sendNotification(receiverId, nameOfSender, message);
+
+                }
+
+                notify = false;
+
+
+            }
+        });
+    }
+
+    private void sendNotification(String receiverId, String nameOfSender, String message) {
+
+        userIdForToken = fAuth.getCurrentUser().getUid();
+        fStore.collection("Tokens").document(receiverId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable @org.jetbrains.annotations.Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+                assert value != null;
+                Token objectToken = value.toObject(Token.class);
+                token = objectToken.getToken();
+
+                Data data = new Data(userIdForToken,
+                        R.mipmap.ic_launcher, message, "New message from " + nameOfSender, receiverId);
+                Sender sender = new Sender(data, token);
+                apiservice.sendNotification(sender).enqueue(new Callback<Response>() {
+                    @Override
+                    public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+
+                        //code of success = 200
+                        if (response.code() == 200) {
+
+                            if (response.body().success != 1) {
+                                Toast.makeText(getApplicationContext(), "Failed to send notification", Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Response> call, Throwable t) {
+
+                    }
+                });
+
+            }
+        });
     }
 
 
@@ -175,22 +246,14 @@ public class chatActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
+        inflater.inflate(R.menu.option_menu_chat, menu);
         MenuItem menuItem = menu.findItem(R.id.searchIcon);
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.signout: signout();
-                break;
-            case R.id.search: //search
-                break;
-            case R.id.userProfile:
-                startActivity(new Intent(getApplicationContext(), UserProfile.class));
-                break;
-            case R.id.donationRequestsRec:
-                startActivity(new Intent(getApplicationContext(), TestReceiverRequestList.class));
+            case R.id.deleteChat: deleteChat();
                 break;
             case android.R.id.home:
                 this.finish();
@@ -201,11 +264,11 @@ public class chatActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void signout() {
-
-        fAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        finish();
-
+    private void deleteChat() {
+        //delete chat
+        MessageViewModel viewModel = new ViewModelProvider(this).get(MessageViewModel.class);
+        viewModel.deleteMessageFromFireStore(receiverId);
+        onStop();
+        startActivity(new Intent(getApplicationContext(), Chat.class));
     }
 }

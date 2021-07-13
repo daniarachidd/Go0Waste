@@ -35,6 +35,7 @@ import daniarachid.donation.Adapters.MainDonationViewAdapter;
 import daniarachid.donation.Categories;
 import daniarachid.donation.DonationRequestManagement.TestReceiverRequestList;
 import daniarachid.donation.MainActivity;
+import daniarachid.donation.Messaging.Chat;
 import daniarachid.donation.R;
 import daniarachid.donation.DonationRequestManagement.TestDonorRequestList;
 import daniarachid.donation.UserAccount.UserProfile;
@@ -237,6 +238,8 @@ public class TestMainDonation extends AppCompatActivity {
             case R.id.receivedDonationRequests:
                 startActivity(new Intent(getApplicationContext(), TestDonorRequestList.class));
                 break;
+            case R.id.chat:
+                startActivity(new Intent(getApplicationContext(), Chat.class));
             case android.R.id.home:
                 this.finish();
                 return true;

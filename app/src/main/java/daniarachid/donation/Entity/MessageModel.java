@@ -1,12 +1,16 @@
 package daniarachid.donation.Entity;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+
 public class MessageModel {
     String sender, receiver, time, message;
+    //Timestamp timee;
 
     public MessageModel() {
     }
 
-    public MessageModel(String sender, String receiver, String time, String message) {
+    public MessageModel(String sender, String receiver, String timee, String message) {
         this.sender = sender;
         this.receiver = receiver;
         this.time = time;

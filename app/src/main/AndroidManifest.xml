@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Donation">
+        <activity android:name=".Messaging.Chat"></activity>
         <activity android:name=".DonationRequestManagement.TestReceiverRequestList" />
         <activity android:name=".DonationRequestManagement.TestDonorRequestList" />
         <activity android:name=".DonationRequestManagement.ReceiverDonationRequestReview" />
@@ -21,7 +22,7 @@
         <activity android:name=".DonationManagement.TestMyItem" />
         <activity android:name=".UserAccount.EditProfile" />
         <activity android:name=".Report" />
-        <activity android:name=".Messaging.chatActivity">
+        <activity android:name=".Messaging.Conversation">
 
             <!-- Need to modify the audio part -->
         </activity>
