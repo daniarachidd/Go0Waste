@@ -67,6 +67,7 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
         //retrieve the titles
 
 
+
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
         DocumentReference df = fStore.collection("Items").document(itemIds.get(position));
         df.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

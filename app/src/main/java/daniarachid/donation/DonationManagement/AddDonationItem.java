@@ -153,6 +153,7 @@ public class AddDonationItem extends AppCompatActivity {
         String itemQuan = mQuantity.getText().toString();
         String category = spinCategory.getSelectedItem().toString();
 
+
         int quantity = Integer.parseInt(itemQuan);
         if (quantity <= 0) {
             mQuantity.setError("Quantity must be > 0");
@@ -177,6 +178,10 @@ public class AddDonationItem extends AppCompatActivity {
         DocumentReference docReference = fStore.collection("Items").document();
         itemId = docReference.getId();
 
+        if (imageUri == null) {
+            Toast.makeText(getApplicationContext(), "Please upload an image", Toast.LENGTH_SHORT).show();
+            return;
+        }
         //Insert the Image to the fire storage
         uploadImageToFirebase(imageUri);
 

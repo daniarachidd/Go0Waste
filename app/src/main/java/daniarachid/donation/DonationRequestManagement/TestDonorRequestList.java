@@ -236,7 +236,8 @@ public class TestDonorRequestList extends AppCompatActivity implements Navigatio
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                         if (task.getResult().isEmpty()) {
-                            Toast.makeText(getApplicationContext(), "There are no requests", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getApplicationContext(), "There are no requests", Toast.LENGTH_SHORT).show();
+
                         }
 
 
@@ -270,6 +271,7 @@ public class TestDonorRequestList extends AppCompatActivity implements Navigatio
                             }
 
 
+
                             //attach with the adapter
                             pendingAdapter = new ReceiverRequestsAdapter(getApplicationContext(), penRequestIds, penDonorIds,penItemIds, penStatusList);
                             respondedAdapter = new ReceiverRequestsAdapter(getApplicationContext(), requestIds, donorIds, itemIds, statusList);
@@ -287,12 +289,12 @@ public class TestDonorRequestList extends AppCompatActivity implements Navigatio
 
                             penRequestList.setLayoutManager(penGLManager);
                             penRequestList.setAdapter(pendingAdapter);
-                            if (penItemIds.size() == 0 ) {
+                            if (penItemIds.size() == 0 && itemIds.size() > 0 ) {
                                 TextView resTextView = findViewById(R.id.txtPending);
                                 resTextView.setVisibility(View.GONE);
                                  penRequestList.setVisibility(View.GONE);
                             }
-                            if (itemIds.size() == 0) {
+                            if (itemIds.size() == 0 && penItemIds.size() > 0 ){
                                 TextView resTextView = findViewById(R.id.txtRequests);
                                 resTextView.setVisibility(View.GONE);
                                 resRequestList.setVisibility(View.GONE);

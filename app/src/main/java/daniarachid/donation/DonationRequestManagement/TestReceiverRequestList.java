@@ -238,7 +238,7 @@ public class TestReceiverRequestList extends AppCompatActivity implements Naviga
                     @Override
                     public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
                         if (task.getResult().isEmpty()) {
-                            Toast.makeText(getApplicationContext(), "There are no requests", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "There are no requests", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -272,6 +272,7 @@ public class TestReceiverRequestList extends AppCompatActivity implements Naviga
                             }
 
 
+
                             //attach with the adapter
                             penAdapter = new ReceiverRequestsAdapter(getApplicationContext(), penRequestIds, penDonorIds, penItemIds, penStatusList);
                             adapter = new ReceiverRequestsAdapter(getApplicationContext(), requestIds, donorIds, itemIds, statusList);
@@ -293,12 +294,12 @@ public class TestReceiverRequestList extends AppCompatActivity implements Naviga
 
 
                             //checking if there are no requests
-                            if (penItemIds.size() == 0 ) {
+                            if (penItemIds.size() == 0 && itemIds.size() >0 ) {
                                 TextView resTextView = findViewById(R.id.txtPending);
                                 resTextView.setVisibility(View.GONE);
                                 penRequestList.setVisibility(View.GONE);
                             }
-                            if (itemIds.size() == 0) {
+                            if (itemIds.size() == 0 && penItemIds.size() > 0) {
                                 TextView resTextView = findViewById(R.id.txtRequests);
                                 resTextView.setVisibility(View.GONE);
                                 requestList.setVisibility(View.GONE);

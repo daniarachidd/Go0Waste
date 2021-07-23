@@ -271,6 +271,12 @@ public class Chat extends AppCompatActivity implements NavigationView.OnNavigati
                LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
                messages.setLayoutManager(llm);
                messages.setAdapter(adapter);
+
+               if (userId.size() ==0) {
+                   TextView text = findViewById(R.id.txtEmptyChat);
+                   text.setVisibility(View.VISIBLE);
+                   text.setText("there are no conversations");
+               }
            }
        }).addOnFailureListener(new OnFailureListener() {
            @Override
