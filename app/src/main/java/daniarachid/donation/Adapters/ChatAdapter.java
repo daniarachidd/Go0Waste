@@ -63,7 +63,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
 
             holder.message.setText(messages.get(position));
-            holder.date.setText(dates.get(position));
+            holder.date.setText(dates.get(position).substring(0,10));
 
             //get the pic
             StorageReference storageReference = FirebaseStorage.getInstance().getReference();
@@ -78,7 +78,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
             //get the user name
 
             FirebaseFirestore fStore = FirebaseFirestore.getInstance();
-            DocumentReference doc = fStore.collection("Users").document(userId.get(position));
+            DocumentReference doc = fStore.collection("Users").document(receiverId.get(position));
             doc.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {

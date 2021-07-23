@@ -10,8 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -33,12 +32,13 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
-import daniarachid.donation.UserAccount.UserProfile;
 
 public class AddDonationItem extends AppCompatActivity {
     EditText mTitle, mDesc, mQuantity;
@@ -47,7 +47,6 @@ public class AddDonationItem extends AppCompatActivity {
     Spinner spinCategory;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
-    FirebaseStorage fStorage;
     StorageReference storageReference;
     String userId, imgUri, itemId;
     Uri imageUri;
@@ -91,7 +90,7 @@ public class AddDonationItem extends AppCompatActivity {
         btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), TestMainDonation.class));
+                startActivity(new Intent(getApplicationContext(), MainDonation.class));
                 finish();
             }
         });
@@ -154,6 +153,25 @@ public class AddDonationItem extends AppCompatActivity {
         String itemQuan = mQuantity.getText().toString();
         String category = spinCategory.getSelectedItem().toString();
 
+        int quantity = Integer.parseInt(itemQuan);
+        if (quantity <= 0) {
+            mQuantity.setError("Quantity must be > 0");
+            return;
+        }
+        if (TextUtils.isEmpty(itemQuan)) {
+            mQuantity.setError("Enter quantity");
+            return;
+        }
+        if (TextUtils.isEmpty(itemTitle)) {
+        mTitle.setError("Enter item title");
+        return;
+        }
+
+        if (TextUtils.isEmpty(itemDesc)) {
+            mDesc.setError("Enter item description");
+            return;
+        }
+
         userId = fAuth.getCurrentUser().getUid();
         //Create an object of Product
         DocumentReference docReference = fStore.collection("Items").document();
@@ -162,6 +180,10 @@ public class AddDonationItem extends AppCompatActivity {
         //Insert the Image to the fire storage
         uploadImageToFirebase(imageUri);
 
+        //get today date
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        Date date = new Date(System.currentTimeMillis());
+        String currentTime = formatter.format(date);
         Map<String, Object> item = new HashMap<>();
 
         item.put("title", itemTitle);
@@ -170,12 +192,13 @@ public class AddDonationItem extends AppCompatActivity {
         item.put("category", category);
         item.put("userId", userId);
         item.put("image", imgUri);
+        item.put("postedDate", currentTime);
         item.put("status", "Available");
         docReference.set(item).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(AddDonationItem.this, "Item added", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getApplicationContext(), TestMainDonation.class));
+                startActivity(new Intent(getApplicationContext(), MainDonation.class));
                 finish();
             }
         });
@@ -192,23 +215,12 @@ public class AddDonationItem extends AppCompatActivity {
         finish();;
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
-        return true;
-    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.signout: signout();
-                break;
-            case R.id.search: //search
-                break;
-            case R.id.userProfile:
-                startActivity(new Intent(getApplicationContext(), UserProfile.class));
-                break;
+
             case android.R.id.home:
                 this.finish();
                 return true;
@@ -218,4 +230,6 @@ public class AddDonationItem extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

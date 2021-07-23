@@ -42,12 +42,11 @@ import java.util.Map;
 
 import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
-import daniarachid.donation.UserAccount.UserProfile;
 
 public class MyItemView extends AppCompatActivity {
     String itemId, title, category, quantity, description, userId, strImgUri;
     Uri imageUri;
-    ImageView itemImage, imgDelete;
+    ImageView itemImage;
     EditText mTitle, mDesc, mQuan;
     Spinner mCategory;
     TextView mStatus;
@@ -89,7 +88,7 @@ public class MyItemView extends AppCompatActivity {
         swStatus = findViewById(R.id.switchStatus);
         btnSave = findViewById(R.id.btnSave);
         btnCancel = findViewById(R.id.btnCancel);
-        imgDelete = findViewById(R.id.imgDelete);
+
 
         showDetails();
 
@@ -148,40 +147,40 @@ public class MyItemView extends AppCompatActivity {
         });
 
 
-        imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MyItemView.this);
-                builder.setTitle("Delete Donation Item?");
-                builder.setMessage("This will permanently delete your item");
-                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //delete
-                        DocumentReference docRef = fStore.collection("Items").document(itemId);
-                        docRef.delete();
-                        StorageReference storageReference;
-                        storageReference = FirebaseStorage.getInstance().getReference();
-                        StorageReference fileRef = storageReference.child("Items/" +itemId + "-" + title + ".jpg");
-                        fileRef.delete();
-                        Toast.makeText(MyItemView.this, "Item is deleted", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(), TestMyItem.class));
-                        finish();
-                        dialog.dismiss();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                AlertDialog alert = builder.create();
-                alert.show();
 
+    }
+
+
+
+
+    public  void deleteItem() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MyItemView.this);
+        builder.setTitle("Delete Donation Item?");
+        builder.setMessage("This will permanently delete your item");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                //delete
+                DocumentReference docRef = fStore.collection("Items").document(itemId);
+                docRef.delete();
+                StorageReference storageReference;
+                storageReference = FirebaseStorage.getInstance().getReference();
+                StorageReference fileRef = storageReference.child("Items/" +itemId + "-" + title + ".jpg");
+                fileRef.delete();
+                Toast.makeText(MyItemView.this, "Item is deleted", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(), TestMyItem.class));
+                finish();
+                dialog.dismiss();
             }
         });
-
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
     private void showDetails() {
         mTitle.setText(title);
@@ -217,19 +216,15 @@ public class MyItemView extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
+        inflater.inflate(R.menu.option_menu_delete, menu);
         return true;
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.signout: signout();
+            case R.id.deleteItem: deleteItem();
                 break;
-            case R.id.search: //search
-                break;
-            case R.id.userProfile:
-                startActivity(new Intent(getApplicationContext(), UserProfile.class));
-                break;
+
             case android.R.id.home:
                 this.finish();
                 return true;

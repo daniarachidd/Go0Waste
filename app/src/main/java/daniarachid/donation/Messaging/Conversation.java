@@ -30,6 +30,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -70,6 +71,7 @@ public class Conversation extends AppCompatActivity {
     APISERVICE apiservice;
     boolean notify = false;
 
+    ListenerRegistration registration;
 
 
     public Conversation() {}
@@ -81,7 +83,10 @@ public class Conversation extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_conversation);
 
+
+        //create api service
         apiservice = Client.getRetrofit("https://fcm.googleapis.com/").create(APISERVICE.class);
+
         //get the user name
         Intent intent = getIntent();
         fAuth = FirebaseAuth.getInstance();
@@ -162,6 +167,10 @@ public class Conversation extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        if (registration != null) {
+            registration.remove();
+        }
+
         viewModel.resetAll();
     }
 
@@ -182,6 +191,7 @@ public class Conversation extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull @NotNull Task<Void> task) {
 
+                String msg = message;
                 Toast.makeText(getApplicationContext(), "Message Sent", Toast.LENGTH_SHORT).show();
             }
         });
@@ -194,6 +204,7 @@ public class Conversation extends AppCompatActivity {
                 nameOfSender = documentSnapshot.getString("name");
                 if (notify) {
                     sendNotification(receiverId, nameOfSender, message);
+                    //Log.d("CheckMe", "Notify: " + nameOfSender);
 
                 }
 
@@ -206,39 +217,42 @@ public class Conversation extends AppCompatActivity {
 
     private void sendNotification(String receiverId, String nameOfSender, String message) {
 
+        fAuth = FirebaseAuth.getInstance();
         userIdForToken = fAuth.getCurrentUser().getUid();
-        fStore.collection("Tokens").document(receiverId).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+        DocumentReference df = fStore.collection("Tokens").document(receiverId);
+        registration = df.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable @org.jetbrains.annotations.Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
                 assert value != null;
                 Token objectToken = value.toObject(Token.class);
+                assert objectToken != null;
                 token = objectToken.getToken();
 
+
                 Data data = new Data(userIdForToken,
-                        R.mipmap.ic_launcher, message, "New message from " + nameOfSender, receiverId);
+                        R.drawable.notification, message, "New message from " + nameOfSender, receiverId, 1);
+
                 Sender sender = new Sender(data, token);
+
                 apiservice.sendNotification(sender).enqueue(new Callback<Response>() {
                     @Override
                     public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
 
-                        //code of success = 200
-                        if (response.code() == 200) {
+                        Toast.makeText(getApplicationContext(), ""+response.message(), Toast.LENGTH_SHORT).show();
 
-                            if (response.body().success != 1) {
-                                Toast.makeText(getApplicationContext(), "Failed to send notification", Toast.LENGTH_SHORT).show();
-
-                            }
-                        }
                     }
 
                     @Override
                     public void onFailure(Call<Response> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "Not sent", Toast.LENGTH_SHORT).show();
 
                     }
                 });
 
             }
         });
+
+
     }
 
 
@@ -270,5 +284,12 @@ public class Conversation extends AppCompatActivity {
         viewModel.deleteMessageFromFireStore(receiverId);
         onStop();
         startActivity(new Intent(getApplicationContext(), Chat.class));
+    }
+
+    public void signout() {
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        finish();;
+
     }
 }

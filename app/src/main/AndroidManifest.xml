@@ -10,37 +10,72 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Donation">
-        <activity android:name=".Messaging.Chat"></activity>
-        <activity android:name=".DonationRequestManagement.TestReceiverRequestList" />
-        <activity android:name=".DonationRequestManagement.TestDonorRequestList" />
-        <activity android:name=".DonationRequestManagement.ReceiverDonationRequestReview" />
+        android:theme="@style/Theme.Donation.NoActionBar">
+        <activity android:name=".Administration.AdminControl"></activity>
+        <activity android:name=".Administration.MainReport" />
+        <activity
+            android:name=".DonationRequestManagement.DonationRequestHistory"
+            android:label="Donation History" />
+        <activity
+            android:name=".TestNavDrawer"
+            android:theme="@style/Theme.Donation.NoActionBar" />
+        <activity android:name=".Messaging.Chat" />
+        <activity
+            android:name=".DonationRequestManagement.TestReceiverRequestList"
+            android:label="Outgoing Donation Requests" />
+        <activity
+            android:name=".DonationRequestManagement.TestDonorRequestList"
+            android:label="Incoming Donation Requests" />
+        <activity
+            android:name=".DonationRequestManagement.ReceiverDonationRequestReview"
+            android:theme="@style/Theme.Donation" />
         <activity android:name=".Categories" />
-        <activity android:name=".DonationManagement.DonationItemView" />
-        <activity android:name=".DonationManagement.MyItemView" />
-        <activity android:name=".DonationManagement.TestMainDonation" />
-        <activity android:name=".DonationManagement.TestMyItem" />
-        <activity android:name=".UserAccount.EditProfile" />
+        <activity
+            android:name=".DonationManagement.DonationItemView"
+            android:label="Details"
+            android:theme="@style/Theme.Donation" />
+        <activity
+            android:name=".DonationManagement.MyItemView"
+            android:label="Details"
+            android:theme="@style/Theme.Donation" />
+        <activity
+            android:name=".DonationManagement.MainDonation"
+            android:label="Donation Items"
+            android:theme="@style/Theme.Donation.NoActionBar" />
+        <activity
+            android:name=".DonationManagement.TestMyItem"
+            android:label="My Donation Items" />
+        <activity
+            android:name=".UserAccount.EditProfile"
+            android:label="Edit Profile"
+            android:theme="@style/Theme.Donation" />
         <activity android:name=".Report" />
-        <activity android:name=".Messaging.Conversation">
+        <activity
+            android:name=".Messaging.Conversation"
+            android:theme="@style/Theme.Donation">
 
             <!-- Need to modify the audio part -->
         </activity>
         <activity
             android:name=".DonationRequestManagement.DonorDonationRequest"
-            android:label="Donation Requests" />
+            android:label="Donation Requests"
+            android:theme="@style/Theme.Donation" />
         <activity
             android:name=".DonationManagement.AddDonationItem"
-            android:label="@string/addDonationItemTitle" />
+            android:label="@string/addDonationItemTitle"
+            android:theme="@style/Theme.Donation" />
         <activity
             android:name=".UserAccount.UserProfile"
-            android:label="@string/userProfileTitle" />
+            android:label="@string/userProfileTitle"
+            android:theme="@style/Theme.Donation.NoActionBar" />
         <activity
             android:name=".UserAccount.SignupActivity"
-            android:label="@string/signupTitle" />
+            android:label="@string/signupTitle"
+            android:theme="@style/Theme.Donation" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/signinTitle">
+            android:label="@string/signinTitle"
+            android:theme="@style/Theme.Donation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -53,15 +88,21 @@
             android:resource="@array/preloaded_fonts" />
 
         <service
+            android:name=".Notification.FirebaseService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_SERVICE" />
+            </intent-filter>
+        </service>
+        <service
             android:name=".Notification.FirebaseMessaging"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGIN_EVENT" />
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <receiver android:name=".Notification.NotificationService" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package daniarachid.donation.Notification;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,6 +10,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.core.app.RemoteInput;
 
 import androidx.annotation.RequiresApi;
@@ -20,10 +23,20 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import daniarachid.donation.DonationRequestManagement.DonorDonationRequest;
+import daniarachid.donation.DonationRequestManagement.ReceiverDonationRequestReview;
 import daniarachid.donation.Messaging.Conversation;
 import daniarachid.donation.R;
 
 public class FirebaseMessaging  extends FirebaseMessagingService {
+
+    public static final int  MESSAGE_NOTIFICATION =1;
+    public static final int DONATION_REQUEST_NOTIFICATION = 2;
+    public static final int REQUEST_STATUS_NOTIFICATION = 3;
+
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -34,6 +47,7 @@ public class FirebaseMessaging  extends FirebaseMessagingService {
         
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         if(firebaseUser!= null) {
+            assert sent != null;
 
             if(sent.equals(firebaseUser.getUid())) {
 
@@ -51,30 +65,49 @@ public class FirebaseMessaging  extends FirebaseMessagingService {
     }
 
 
+
+
+
+
+
     private void sendNotification(RemoteMessage remoteMessage) {
+        Log.d("CheckMe", "Send normal Notification");
 
         String user = remoteMessage.getData().get("user");
         String icon = remoteMessage.getData().get("icon");
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
+        int type = Integer.parseInt(remoteMessage.getData().get("type"));
 
-        //might need the intent so check later
+
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
-
+      Intent intent = new Intent();
         Bundle bundle = new Bundle();
-        bundle.putString("friendid", user);
+        switch (type) {
+            case MESSAGE_NOTIFICATION:
+                 intent = new Intent(this, Conversation.class);
+                break;
+            case DONATION_REQUEST_NOTIFICATION:
+                 intent = new Intent(this, DonorDonationRequest.class);
+                 ;
+                break;
+            case REQUEST_STATUS_NOTIFICATION:
+                 intent = new Intent(this, ReceiverDonationRequestReview.class);
+        }
 
-        /*
-        PendingIntent pendingStuff = new NavDeepLinkBuilder(
-                getApplicationContext()).setGraph(R.navigation.nav_graph)
-                .setArguments(bundle).setDestination(R.id.nav_host_fragment_content_test_chat)
-                .createPendingIntent();
+        //Intent intent = new Intent(this, Conversation.class);
 
-         */
-        PendingIntent pendingStuff = new NavDeepLinkBuilder(getApplicationContext()).setArguments(bundle)
-                .setDestination(R.id.chatActivity).createPendingIntent();
+
+        bundle.putString("receiverId", user);
+
+
+
+        intent.putExtras(bundle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent, PendingIntent.FLAG_ONE_SHOT);
 
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -84,7 +117,7 @@ public class FirebaseMessaging  extends FirebaseMessagingService {
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(defaultSound)
-                .setContentIntent(pendingStuff);
+                .setContentIntent(pendingIntent);
         NotificationManager noti = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
         int i = 0;
@@ -92,78 +125,76 @@ public class FirebaseMessaging  extends FirebaseMessagingService {
             i = j;
         }
 
-
-        SharedPreferences shf = getSharedPreferences("NEWPRFS", MODE_PRIVATE);
-        SharedPreferences.Editor editorShf = shf.edit();
-        editorShf.putInt("values", i);
-        editorShf.apply();
-        noti.notify(i, builder.build());
+        noti.notify(j, builder.build());
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT_WATCH)
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     private void sendOreoNotification(RemoteMessage remoteMessage) {
+        //Log.d("CheckMe", "send Oreo Notification");
         String user = remoteMessage.getData().get("user");
         String icon = remoteMessage.getData().get("icon");
         String title = remoteMessage.getData().get("title");
         String body = remoteMessage.getData().get("body");
+        String requestId = remoteMessage.getData().get("requestId");
+        String requestedItemTitle = remoteMessage.getData().get("requestedItemTitle");
+        int type = Integer.parseInt(remoteMessage.getData().get("type"));
+
+
+        //might need the intent so check later
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
+
+        Intent intent = new Intent();
+
+        switch (type) {
+            case MESSAGE_NOTIFICATION:
+                //check this out
+               // user = remoteMessage.getData().get("")
+
+                intent = new Intent(this, Conversation.class);
+
+                break;
+            case DONATION_REQUEST_NOTIFICATION:
+                intent = new Intent(this, DonorDonationRequest.class);
+                intent.putExtra("requestId", requestId);
+                intent.putExtra("title", requestedItemTitle);
+                break;
+            case REQUEST_STATUS_NOTIFICATION:
+                intent = new Intent(this, ReceiverDonationRequestReview.class);
+                intent.putExtra("requestId", requestId);
+                intent.putExtra("title", requestedItemTitle);
+                intent.putExtra("donorId", user);
+        }
+
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        String sender = fAuth.getCurrentUser().getUid();
+
         Bundle bundle = new Bundle();
-        bundle.putString("friendId", user);
+        bundle.putString("receiverId", user);
+        bundle.putString("senderId", sender);
 
-        SharedPreferences sharedPreferences = getSharedPreferences("PREFS", MODE_PRIVATE);
-        SharedPreferences.Editor predsfits = sharedPreferences.edit();
-        predsfits.putString("friendId", user);
-        predsfits.apply();
 
+        intent.putExtras(bundle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent, PendingIntent.FLAG_ONE_SHOT);
 
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        
-        OreoNotification oreoNotification = new OreoNotification(this);
 
-        //for action reply
-        RemoteInput remoteInput = new RemoteInput.Builder("key_text_reply").setLabel("Your Message...").build();
-        Intent replyIntent;
-        PendingIntent pIntentreply = null;
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            replyIntent = new Intent(this, NotificationService.class);
-            pIntentreply = PendingIntent.getBroadcast(this, 0 , replyIntent, 0);
-            
-        }
-
-        // reply to a message in the notification
-        NotificationCompat.Action replyAction = new NotificationCompat.Action.Builder(R.drawable.reply,
-                "Reply", pIntentreply).addRemoteInput(remoteInput).build();
+        OreoNotification notification1 = new OreoNotification(this);
+        Notification.Builder builder  = notification1.getNotification(title, body, pendingIntent, defaultSound, icon);
 
 
 
-
-        //check the destination 32:47
-        //taking us to the conversation
-        PendingIntent pendingStuff = new NavDeepLinkBuilder(
-                getApplicationContext())
-                .setArguments(bundle).setDestination(R.id.chatActivity)
-                .createPendingIntent();
-
-        NotificationCompat.Builder builder = oreoNotification.getNotificationStuff(replyAction,
-                title, body, pendingStuff, defaultSound, icon);
 
         int i = 0;
-        if (j > 0) {
+        if (j > 0){
             i = j;
         }
 
-        //update the notification
-
-        SharedPreferences shf = getSharedPreferences("NEWPRFS", MODE_PRIVATE);
-        SharedPreferences.Editor editorShf = shf.edit();
-        editorShf.putInt("values", i);
-        editorShf.apply();
-
-        oreoNotification.getManager().notify(i, builder.build());
+        notification1.getManager().notify(j, builder.build());
 
 
 

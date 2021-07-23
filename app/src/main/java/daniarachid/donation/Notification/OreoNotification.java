@@ -15,7 +15,7 @@ import androidx.core.app.NotificationCompat;
 
 import java.lang.annotation.Target;
 
-class OreoNotification extends ContextWrapper {
+class   OreoNotification extends ContextWrapper {
     public static final String CHANNEL_ID = "daniarachid.donation";
     public static final String  NAME = "Chat";
     NotificationManager notificationManager;
@@ -54,17 +54,26 @@ class OreoNotification extends ContextWrapper {
     }
 
 
-    @TargetApi(Build.VERSION_CODES.O)
-    public NotificationCompat.Builder getNotificationStuff(
-            NotificationCompat.Action action , String title, String body, PendingIntent pIntent, Uri soundUri, String icon) {
 
-        return new NotificationCompat.Builder(this, CHANNEL_ID)
-                .addAction(action)
-                .setContentIntent(pIntent)
+
+
+
+
+    @TargetApi(Build.VERSION_CODES.O)
+    public Notification.Builder getNotification(String title, String body, PendingIntent pIntent, Uri soundUri, String icon) {
+
+        return  new Notification.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setSound(soundUri)
+                .setContentIntent(pIntent)
+                .setAutoCancel(true)
                 .setSmallIcon(Integer.parseInt(icon));
+
+
+
 
     }
 }
+
+

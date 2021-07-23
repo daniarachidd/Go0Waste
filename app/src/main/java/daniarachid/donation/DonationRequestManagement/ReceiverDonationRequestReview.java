@@ -36,7 +36,6 @@ import org.jetbrains.annotations.NotNull;
 
 import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
-import daniarachid.donation.UserAccount.UserProfile;
 import daniarachid.donation.Messaging.Conversation;
 
 public class ReceiverDonationRequestReview extends AppCompatActivity {
@@ -173,28 +172,19 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
         finish();;
 
     }
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
+        inflater.inflate(R.menu.option_menu_delete, menu);
         return true;
     }
+
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.signout: signout();
-                break;
-            case R.id.search: //search
-                break;
-            case R.id.userProfile:
-                startActivity(new Intent(getApplicationContext(), UserProfile.class));
-                break;
-            case R.id.donationRequestsRec:
-                startActivity(new Intent(getApplicationContext(), TestReceiverRequestList.class));
-                break;
-            case R.id.receivedDonationRequests:
-                startActivity(new Intent(getApplicationContext(), DonorDonationRequest.class));
-                break;
+
             case android.R.id.home:
                 this.finish();
                 return true;

@@ -24,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -36,13 +38,13 @@ import daniarachid.donation.R;
 public class SignupActivity extends AppCompatActivity {
     //mName , mEmail, mPassword, confirm password
     EditText mName, mEmail, mPassword, mCPassword,mPhoneNo;
-    boolean allowSignUp = false;
+
 
     Button signUpBtn;
     FirebaseAuth fAuth;
     ProgressBar progressBar;
     FirebaseFirestore fStore;
-    String userID;
+    String userId, token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,22 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    private void saveToken(String token) {
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+        userId =  fAuth.getCurrentUser().getUid();
+        Map<String, Object> tokens = new HashMap<>();
+        tokens.put("token", token);
+        fStore.collection("Tokens").document(userId).set(tokens).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+
+            }
+        });
+
 
     }
     public void signInClicked(View v){
@@ -127,6 +145,15 @@ public class SignupActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(SignupActivity.this, "Verification email has been sent", Toast.LENGTH_SHORT).show();
+                            //get the token
+                            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                                @Override
+                                public void onSuccess(InstanceIdResult instanceIdResult) {
+                                    token = instanceIdResult.getToken();
+                                    saveToken(token);
+                                }
+                            });
+
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -140,20 +167,21 @@ public class SignupActivity extends AppCompatActivity {
 
 
                     //Toast.makeText(SignupActivity.this, "Signed up successfully", Toast.LENGTH_SHORT).show();
-                    userID = fAuth.getCurrentUser().getUid();
+                    userId = fAuth.getCurrentUser().getUid();
 
                     // REGISTER USER INFORMATION
-                    DocumentReference docReference = fStore.collection("Users").document(userID);
+                    DocumentReference docReference = fStore.collection("Users").document(userId);
                     Map<String, Object> user = new HashMap<>();
 
                     //INSERT DATA
                     user.put("name", name);
                     user.put("email", email);
                     user.put("phone", phoneNo);
+                    user.put("isAuthorized", false);
                     docReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Log.d("TAG", "onSuccess: use profile is created for " + userID);
+                            Log.d("TAG", "onSuccess: use profile is created for " + userId);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override

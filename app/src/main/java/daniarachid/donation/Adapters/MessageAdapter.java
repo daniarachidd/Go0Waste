@@ -62,7 +62,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
         holder.showMessage.setVisibility(View.VISIBLE);
         holder.time.setVisibility(View.VISIBLE);
         holder.showMessage.setText(messageModelList.get(position).getMessage());
-        holder.time.setText(messageModelList.get(position).getTime().substring(11,17));
+        holder.time.setText(messageModelList.get(position).getTime().substring(11,16));
         //holder.time.setText(messageModelList.get(position).getTime().toString());
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();

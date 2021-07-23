@@ -50,6 +50,8 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
     }
 
 
+
+
     @NonNull
     @NotNull
     @Override
@@ -71,19 +73,22 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
             @Override
             public void onComplete(@NonNull @NotNull Task<DocumentSnapshot> task) {
                 DocumentSnapshot doc = task.getResult();
-                String title = doc.get("title").toString();
-                titlesList.add(title);
-                holder.title.setText(doc.get("title").toString());
+                if (doc.exists()) {
+                    String title = doc.get("title").toString();
+                    titlesList.add(title);
+                    holder.title.setText(doc.get("title").toString());
 
-                //get the picture of the item
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                StorageReference profileRef = storageReference.child("Items/" + itemIds.get(position) + "-" + title + ".jpg");
-                profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Picasso.get().load(uri).into(holder.requestedItem);
-                    }
-                });
+                    //get the picture of the item
+                    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                    StorageReference profileRef = storageReference.child("Items/" + itemIds.get(position) + "-" + title + ".jpg");
+                    profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            Picasso.get().load(uri).into(holder.requestedItem);
+                        }
+                    });
+                }
+
 
 
 

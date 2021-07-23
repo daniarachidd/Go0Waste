@@ -37,10 +37,11 @@ import java.util.Map;
 
 import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditProfile extends AppCompatActivity {
     EditText mName, mPhone, mEmail;
-    ImageView profileImg;
+    CircleImageView profileImg;
     Button saveBtn;
     FirebaseAuth fAuth;
     FirebaseFirestore fStore;
@@ -60,7 +61,7 @@ public class EditProfile extends AppCompatActivity {
         String phone = data.getStringExtra("phone");
         String  email = data.getStringExtra("email");
 
-       // Log.d("TAG", "onCreate: " + name + " " + phone + " " + address);
+
 
 
         mName = findViewById(R.id.txtName);
@@ -190,6 +191,8 @@ public class EditProfile extends AppCompatActivity {
         finish();;
 
     }
+
+    /*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -197,16 +200,11 @@ public class EditProfile extends AppCompatActivity {
         return true;
     }
 
+*/
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
-            case R.id.signout: signout();
-                break;
-            case R.id.search: //search
-                break;
-            case R.id.userProfile:
-                startActivity(new Intent(getApplicationContext(), UserProfile.class));
-                break;
+            
             case android.R.id.home:
                 this.finish();
                 return true;
@@ -215,4 +213,6 @@ public class EditProfile extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

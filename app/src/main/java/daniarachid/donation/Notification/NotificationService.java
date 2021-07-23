@@ -37,11 +37,12 @@ public class NotificationService extends BroadcastReceiver {
             String replyText = remoteInput.getString("key_text_reply");
             FirebaseAuth fAuth = FirebaseAuth.getInstance();
             String userId = fAuth.getCurrentUser().getUid();
+            FirebaseFirestore fStore = FirebaseFirestore.getInstance();
 
             SharedPreferences sharedPreferences = context.getSharedPreferences("PREFS",
                     (Context.MODE_PRIVATE));
 
-            String friendId = sharedPreferences.getString("friendId", "");
+            String friendId = sharedPreferences.getString("receiverId", "");
 
             //get the time for the reply
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
@@ -56,7 +57,7 @@ public class NotificationService extends BroadcastReceiver {
             message.put("message", replyText);
             message.put("time", currentTime);
 
-            FirebaseFirestore fStore = FirebaseFirestore.getInstance();
+            //FirebaseFirestore fStore = FirebaseFirestore.getInstance();
             fStore.collection("Messages").document(currentTime).set(message).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {

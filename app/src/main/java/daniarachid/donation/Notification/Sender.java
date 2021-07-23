@@ -1,8 +1,11 @@
 package daniarachid.donation.Notification;
 
-public class Sender {
+public class  Sender {
     Data data;
     String to;
+
+
+    public Sender() {}
 
     public  Sender(Data data, String to) {
         this.data = data;
@@ -10,4 +13,21 @@ public class Sender {
     }
 
 
+
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
 }

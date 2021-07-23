@@ -22,14 +22,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import daniarachid.donation.DonationManagement.TestMainDonation;
+import daniarachid.donation.DonationManagement.MainDonation;
 import daniarachid.donation.UserAccount.SignupActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,19 +57,11 @@ public class MainActivity extends AppCompatActivity {
          **/
 
 
-        // THIS SHOULD BE MOVED TO SIGN UP ACTIVITY
-        //get the token
-        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
-            @Override
-            public void onSuccess(InstanceIdResult instanceIdResult) {
-              //  token = instanceIdResult.getToken();
-                //saveToken(token);
-            }
-        });
+
 
     }
 
-    /*
+
     private void saveToken(String token) {
         FirebaseAuth fAuth = FirebaseAuth.getInstance();
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
@@ -81,14 +72,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void unused) {
 
-                Toast.makeText(getApplicationContext(), "Token added successfully", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Token added successfully", Toast.LENGTH_SHORT).show();
             }
         });
 
 
     }
 
-     */
+
 
     public void resetPassword(View view) {
         // GET USER EMAIL
@@ -131,11 +122,6 @@ public class MainActivity extends AppCompatActivity {
     }
     public void signIn(View view){
 
-/**
-        if(fAuth.getCurrentUser() != null ) {
-            startActivity(new Intent(getApplicationContext(), TestMainDonation.class));
-            finish();
-        } **/
         // INPUT VALIDATION
                 String email = mEmail.getText().toString().trim();
                 String password = mPassword.getText().toString().trim();
@@ -160,7 +146,21 @@ public class MainActivity extends AppCompatActivity {
                     public void onComplete(@NotNull Task<AuthResult> task) {
                         if(task.isSuccessful()) {
                             Toast.makeText(MainActivity.this, "Signed in successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(getApplicationContext(), TestMainDonation.class));
+
+
+
+                            //get the token
+                            FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                                @Override
+                                public void onSuccess(InstanceIdResult instanceIdResult) {
+                                    token = instanceIdResult.getToken();
+                                    saveToken(token);
+                                }
+                            });
+
+
+
+                            startActivity(new Intent(getApplicationContext(), MainDonation.class));
                             progressBar.setVisibility(View.GONE);
                         } else {
                             Toast.makeText(MainActivity.this, "Error: " + task.getException().getMessage() , Toast.LENGTH_SHORT).show();
@@ -175,6 +175,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         //SIGN IN
+
 
 
     public void signUp(View v){

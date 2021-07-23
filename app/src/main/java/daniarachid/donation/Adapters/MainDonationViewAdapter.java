@@ -68,9 +68,9 @@ public class MainDonationViewAdapter extends RecyclerView.Adapter<MainDonationVi
         //String className = getClass().getName();
        // Log.d("TAG", "the Class name is: " +className);
         holder.title.setText(titles.get(position));
-        holder.description.setText(descriptions.get(position));
-        holder.quantity.setText("Quantity " + quantities.get(position));
-        holder.category.setText(categories.get(position));
+       // holder.description.setText(descriptions.get(position));
+      //  holder.quantity.setText("Quantity " + quantities.get(position));
+        //holder.category.setText(categories.get(position));
 
         FirebaseFirestore fStore = FirebaseFirestore.getInstance();
         DocumentReference dr = fStore.collection("Users").document(userIds.get(position));

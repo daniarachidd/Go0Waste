@@ -1,12 +1,14 @@
 package daniarachid.donation.DonationManagement;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,7 +25,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -40,11 +46,16 @@ import java.util.Locale;
 import java.util.Map;
 
 import daniarachid.donation.DonationRequestManagement.QuantityPickerDialog;
-import daniarachid.donation.DonationRequestManagement.TestReceiverRequestList;
 import daniarachid.donation.MainActivity;
+import daniarachid.donation.Notification.APISERVICE;
+import daniarachid.donation.Notification.Client;
+import daniarachid.donation.Notification.Data;
+import daniarachid.donation.Notification.Response;
+import daniarachid.donation.Notification.Sender;
+import daniarachid.donation.Notification.Token;
 import daniarachid.donation.R;
-import daniarachid.donation.DonationRequestManagement.TestDonorRequestList;
-import daniarachid.donation.UserAccount.UserProfile;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class DonationItemView extends AppCompatActivity implements  NumberPicker.OnValueChangeListener{
     String itemId, title, category, quantity, description, userId, donor;
@@ -53,15 +64,34 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
     Button btnRequest;
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
+    String requestId;
+
     int selectedQuantity;
     int quantityVal;
+
+
+    //for notification
+    String nameOfSender, token, userIdForToken;
+    APISERVICE apiservice;
+    boolean notify = false;
+
+    boolean userStatus = true;
+    ListenerRegistration registration;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donation_item_view);
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+
+
+        apiservice = Client.getRetrofit("https://fcm.googleapis.com/").create(APISERVICE.class);
+
 
         Map<String, Object> item = (Map<String, Object>) getIntent().getSerializableExtra("item");
         itemId = (String) item.get("itemId");
@@ -104,6 +134,7 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
             @Override
             public void onClick(View v) {
 
+
                 requestItem(btnRequest);
             }
         });
@@ -115,7 +146,11 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
 
 
     private void requestItem(View v) {
+        notify = true;
 
+        if (selectedQuantity == 0) {
+            selectedQuantity = quantityVal;
+        }
         // add a donation request to firebase
 
         Map<String, Object> donationRequest = new HashMap<>();
@@ -135,6 +170,8 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
             @Override
             public void onSuccess(Void unused) {
                 Toast.makeText(getApplicationContext(), "Request is sent", Toast.LENGTH_SHORT).show();
+                requestId = doc.getId();
+
                 finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -146,9 +183,26 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
 
 
 
+
+
         //disable request button
         btnRequest.setEnabled(false);
         btnRequest.setText("Requested");
+
+        fStore.collection("Users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                nameOfSender = documentSnapshot.getString("name");
+                if (notify) {
+                    sendRequestNotification(donor, nameOfSender);
+                    //Log.d("CheckMe", "Notify: " + nameOfSender);
+
+                }
+
+                notify = false;
+            }
+        });
+
 
 
 
@@ -156,39 +210,80 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
 
     }
 
+
+    @Override
+    protected void onStop() {
+
+        if(registration != null) {
+            registration.remove();
+        }
+
+        super.onStop();
+    }
+
+    private void sendRequestNotification(String donor, String nameOfSender) {
+        FirebaseAuth fAuth = FirebaseAuth.getInstance();
+        userIdForToken = fAuth.getCurrentUser().getUid();
+        Log.d("ChekMe", "Donor Id "  + donor);
+        DocumentReference df = fStore.collection("Tokens").document(donor);
+        registration = df.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable @org.jetbrains.annotations.Nullable DocumentSnapshot value, @Nullable @org.jetbrains.annotations.Nullable FirebaseFirestoreException error) {
+                if (userStatus == false) {
+
+                }
+                assert value != null;
+                Token objectToken = value.toObject(Token.class);
+                assert objectToken != null;
+                token = objectToken.getToken();
+               Log.d("CheckMe", "Token: " + token);
+
+                //String message = "";
+                Data data = new Data(userId,  R.drawable.notification,
+                         nameOfSender + " has requested your item " + title, "New Donation Request", donor, requestId, title, 2);
+
+
+                Sender sender = new Sender(data, token);
+
+                apiservice.sendNotification(sender).enqueue(new Callback<Response>() {
+                    @Override
+                    public void onResponse(Call<Response> call, retrofit2.Response<Response> response) {
+                        Toast.makeText(getApplicationContext(), ""+response.message(), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Response> call, Throwable t) {
+
+                    }
+                });
+            }
+        });
+
+    }
+
+
     public void signout() {
+        userStatus = false;
         FirebaseAuth.getInstance().signOut();
         startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();;
 
     }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
-        return true;
-    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.signout: signout();
-                break;
 
-            case R.id.userProfile:
-                startActivity(new Intent(getApplicationContext(), UserProfile.class));
-                break;
-            case R.id.donationRequestsRec:
-                startActivity(new Intent(getApplicationContext(), TestReceiverRequestList.class));
-                break;
-            case R.id.receivedDonationRequests:
-                startActivity(new Intent(getApplicationContext(), TestDonorRequestList.class));
-                break;
             case android.R.id.home:
                 this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
 
 
     private void showDetails() {
