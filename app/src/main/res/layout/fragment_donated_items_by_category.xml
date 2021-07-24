@@ -58,23 +58,19 @@
         android:layout_width="match_parent"
         android:id="@+id/byDonorSpinner"/>
 
-    <!--
-    <TableRow
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp">
 
         <TextView
+            android:layout_marginTop="100dp"
+            android:layout_marginStart="20dp"
             android:id="@+id/txtDownload"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:text="Download report"
-            android:visibility="invisible"
+            android:visibility="visible"
             android:textSize="16sp"
             android:textColor="@color/teal_700"
             android:layout_marginLeft="20dp"
             android:textStyle="bold"></TextView>
-    </TableRow>
-    -->
+
 </TableLayout>
 

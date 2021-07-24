@@ -44,6 +44,7 @@ import java.util.List;
 
 import daniarachid.donation.Adapters.MainDonationViewAdapter;
 import daniarachid.donation.Administration.AdminControl;
+import daniarachid.donation.Administration.ContactUs;
 import daniarachid.donation.Administration.MainReport;
 import daniarachid.donation.DonationRequestManagement.DonationRequestHistory;
 import daniarachid.donation.DonationRequestManagement.TestReceiverRequestList;
@@ -207,6 +208,7 @@ public class MainDonation extends AppCompatActivity implements NavigationView.On
                 startActivity(new Intent(getApplicationContext(), Chat.class));
                 break;
             case R.id.nav_contactUs:
+                startActivity(new Intent(getApplicationContext(), ContactUs.class));
                 break;
             case R.id.nav_adminsControl:
                 startActivity(new Intent(getApplicationContext(), AdminControl.class));

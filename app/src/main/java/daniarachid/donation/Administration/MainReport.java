@@ -124,62 +124,6 @@ public class MainReport extends AppCompatActivity implements NavigationView.OnNa
         spinner.setAdapter(dataAdapter);
 
 
-        /*
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-                if(parent.getItemAtPosition(position).equals("Select report type.."))
-                {
-
-                    //do nothing
-                }
-                else
-                {
-                    String item = parent.getItemAtPosition(position).toString();
-                   // tvFilter.setVisibility(View.VISIBLE);
-
-                    switch (item) {
-                        case "Donated items by category":
-                            Bundle bundle = new Bundle();
-                            bundle.putString("type", "1");
-                            setFragment(fragment_donated_items_by_category);
-                            fragment_donated_items_by_category.setArguments(bundle);
-                            reportType = 1;
-                            break;
-                        case "Donated items by donors":
-                            setFragment(donated_items_by_donor);
-                            reportType = 2;
-                            break;
-                        case "Donated items by receivers" :
-                            setFragment(donated_items_by_receiver);
-                            reportType = 3;
-                            break;
-                        case "Active donation items by category":
-                            bundle = new Bundle();
-                            bundle.putString("type", "4");
-                            setFragment(fragment_active_items_by_category);
-                            fragment_active_items_by_category.setArguments(bundle);
-
-                            break;
-
-
-                        default:
-                            //nothing
-                    }
-
-                    //Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-         */
         setNavigationDrawer();
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -321,16 +265,15 @@ public class MainReport extends AppCompatActivity implements NavigationView.OnNa
     public void setFragment(Fragment fragment) {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        //fragmentTransaction.replace(R.id.main_frame, fragment);
+
 
         Fragment current = getSupportFragmentManager().findFragmentById(R.id.main_frame);
         if (current != null) {
-            Log.d("CheckMe", "already fiound");
+
             Bundle bundle = new Bundle();
             bundle.putString("dateFrom", strDateFrom);
             bundle.putString("dateTo", strDateTo);
 
-            int id = fragment_active_items_by_category.getId();
 
             int currentId = current.getId();
 

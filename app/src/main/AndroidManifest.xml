@@ -3,22 +3,28 @@
     package="daniarachid.donation">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Donation.NoActionBar">
-        <activity android:name=".Administration.AdminControl"></activity>
-        <activity android:name=".Administration.MainReport" />
+        <activity android:name=".Administration.ContactUs"
+            android:label="Contact Us"></activity>
+        <activity
+            android:name=".Administration.AdminControl"
+            android:label="Admin Control" />
+        <activity
+            android:name=".Administration.MainReport"
+            android:label="Reports" />
         <activity
             android:name=".DonationRequestManagement.DonationRequestHistory"
             android:label="Donation History" />
-        <activity
-            android:name=".TestNavDrawer"
-            android:theme="@style/Theme.Donation.NoActionBar" />
         <activity android:name=".Messaging.Chat" />
         <activity
             android:name=".DonationRequestManagement.TestReceiverRequestList"
@@ -29,7 +35,6 @@
         <activity
             android:name=".DonationRequestManagement.ReceiverDonationRequestReview"
             android:theme="@style/Theme.Donation" />
-        <activity android:name=".Categories" />
         <activity
             android:name=".DonationManagement.DonationItemView"
             android:label="Details"
@@ -49,7 +54,6 @@
             android:name=".UserAccount.EditProfile"
             android:label="Edit Profile"
             android:theme="@style/Theme.Donation" />
-        <activity android:name=".Report" />
         <activity
             android:name=".Messaging.Conversation"
             android:theme="@style/Theme.Donation">

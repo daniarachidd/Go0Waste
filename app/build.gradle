@@ -61,10 +61,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
 
-    //implementation 'com.google.firebase:firebase-core:16.0.0'
 
-    //Coroutines
-    //implementation 'org.jetbrains.'
     //retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.2'
     implementation 'com.squareup.retrofit2:converter-gson:2.6.0'
@@ -75,6 +72,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+    implementation 'com.itextpdf:io:7.0.2'
+    implementation 'com.itextpdf:kernel:7.0.2'
+    implementation 'com.itextpdf:layout:7.0.2'
+    implementation 'com.itextpdf:itext7-core:7.1.8'
 
 
 }

@@ -200,6 +200,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     }
 
     private void setReportByCategory(ViewHolder holder) {
+        /*
         list = new ArrayList<>();
         fStore = FirebaseFirestore.getInstance();
         holder.category.setText(categories.get(holder.getLayoutPosition()));
@@ -382,6 +383,10 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
                 holder.donatedNo.setText("Not found");
 
         }
+
+         */
+        holder.category.setText(categories.get(holder.getLayoutPosition()));
+        holder.donatedNo.setText(sorted.get(holder.getLayoutPosition()).toString());
     }
 
 

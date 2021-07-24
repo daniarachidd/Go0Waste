@@ -46,4 +46,17 @@
     </androidx.recyclerview.widget.RecyclerView>
 
 
+    <TextView
+        android:layout_marginTop="100dp"
+        android:layout_marginStart="20dp"
+        android:id="@+id/txtDownload"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Download report"
+        android:visibility="visible"
+        android:textSize="16sp"
+        android:textColor="@color/teal_700"
+        android:layout_marginLeft="20dp"
+        android:textStyle="bold"></TextView>
+
 </TableLayout>
