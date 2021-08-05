@@ -70,7 +70,7 @@ public class HistoryRequestAdapter  extends RecyclerView.Adapter<HistoryRequestA
 
                     //set the picture
                     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                    StorageReference profileRef = storageReference.child("Items/" + itemId.get(holder.getLayoutPosition()) + "-" + doc.get("title") + ".jpg");
+                    StorageReference profileRef = storageReference.child("Items/" + itemId.get(holder.getLayoutPosition()) +  ".jpg");
                     profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {

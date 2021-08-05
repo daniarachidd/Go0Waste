@@ -141,7 +141,7 @@ public class Fragment_donated_items_by_category extends Fragment {
 
 
 
-        //getData/();
+
 
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -186,6 +186,13 @@ public class Fragment_donated_items_by_category extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void createPdf() {
+        categories.clear();
+        categories.add("Food");
+        categories.add("Women Clothes");
+        categories.add("Men Clothes");
+        categories.add("Kids Clothes");
+        categories.add("Toys");
+        categories.add("Appliances");
         date = new Date();
 
 
@@ -231,7 +238,7 @@ public class Fragment_donated_items_by_category extends Fragment {
         paint.setStyle(Paint.Style.FILL);
         canvas.drawText("No. ", 120, 650, paint);
         canvas.drawText("Category ", 480, 650, paint);
-        canvas.drawText("Donated Items", 820, 650, paint);
+        canvas.drawText("Donated Items", 830, 650, paint);
         canvas.drawLine(240, 610, 240,  660, paint);
         canvas.drawLine(800, 610, 800, 660, paint);
 
@@ -285,6 +292,7 @@ public class Fragment_donated_items_by_category extends Fragment {
                                     if (!task.getResult().isEmpty())
                                     {
 
+
                                         int food = 0, women = 0, men = 0, kids = 0, toys = 0, appliances = 0;
                                         for (QueryDocumentSnapshot doc : task.getResult())
                                         {
@@ -336,6 +344,12 @@ public class Fragment_donated_items_by_category extends Fragment {
                                         number.add(appliances);
 
                                         //sort the data (Descending)
+
+                                        Log.d("CheckMe", "Before");
+                                        for (int i = 0; i < categories.size(); i++) {
+                                            Log.d("CheckMe", i + categories.get(i));
+                                            Log.d("CheckMe", i + number.get(i).toString());
+                                        }
 
                                         for (int i =0 ; i < number.size(); i++)
                                         {
@@ -585,8 +599,11 @@ public class Fragment_donated_items_by_category extends Fragment {
                                         }
 
                                         //create the file here
+
+                                        dateFormat = new SimpleDateFormat("dd-MM-yyyy");
                                         pdfDocument.finishPage(page);
-                                        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "/Hello.pdf");
+                                        String fileName = "Report_of_donated_items(" + dateFormat.format(date) + ").pdf";
+                                        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
 
                                         try {
                                             pdfDocument.writeTo(new FileOutputStream(file));
@@ -665,6 +682,15 @@ public class Fragment_donated_items_by_category extends Fragment {
 
 
     private void getDescData() {
+
+        categories.clear();
+        categories.add("Food");
+        categories.add("Women Clothes");
+        categories.add("Men Clothes");
+        categories.add("Kids Clothes");
+        categories.add("Toys");
+        categories.add("Appliances");
+
 
         reports.removeAllViews();
         fStore = FirebaseFirestore.getInstance();
@@ -828,7 +854,13 @@ public class Fragment_donated_items_by_category extends Fragment {
     }
     private void getAscData() {
 
-
+        categories.clear();
+        categories.add("Food");
+        categories.add("Women Clothes");
+        categories.add("Men Clothes");
+        categories.add("Kids Clothes");
+        categories.add("Toys");
+        categories.add("Appliances");
         reports.removeAllViews();
         fStore = FirebaseFirestore.getInstance();
         //get item ids

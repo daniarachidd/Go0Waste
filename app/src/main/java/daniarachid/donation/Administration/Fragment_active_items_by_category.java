@@ -102,8 +102,7 @@ public class Fragment_active_items_by_category extends Fragment {
             //convert date strings to actual date
             dateStart = new SimpleDateFormat("dd-MM-yyyy").parse(dateFrom);
             dateEnd = new SimpleDateFormat("dd-MM-yyyy").parse(dateTo);
-            Log.d("CheckMe", "start --> " + dateFrom + " " +
-                    "end --> " + dateTo);
+
         } catch (ParseException e) {
             Log.d("CheckMe", e.getMessage());
         }
@@ -152,12 +151,14 @@ public class Fragment_active_items_by_category extends Fragment {
                                                     String date = document.get("postedDate").toString();
                                                     try {
                                                         actualDate = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+
                                                     } catch (ParseException e) {
                                                         Log.d("CheckMe", e.getMessage());
                                                     }
 
                                                     if ((actualDate.equals(dateStart) || actualDate.after(dateStart)) &&
                                                             (actualDate.equals(dateEnd) || actualDate.before(dateEnd))) {
+
                                                         if (!donatedItemsIds.contains(document.getId())) {
                                                             if (!itemIds.contains(document.getId())) {
                                                                 itemIds.add(document.getId());
@@ -193,12 +194,13 @@ public class Fragment_active_items_by_category extends Fragment {
 
                                                 //set the adapter here
                                                 List<Integer> number = new ArrayList<>();
-                                                number.add(food);
-                                                number.add(women);
-                                                number.add(men);
-                                                number.add(kids);
-                                                number.add(toys);
                                                 number.add(appliances);
+                                                number.add(food);
+                                                number.add(kids);
+                                                number.add(men);
+                                                number.add(toys);
+                                                number.add(women);
+
                                                 adapter = new ReportAdapter(getContext(), itemIds, categories, number, 4);
                                                 LinearLayoutManager manager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
                                                 reports.setLayoutManager(manager);
@@ -219,6 +221,9 @@ public class Fragment_active_items_by_category extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void createPdf() {
+        for (int i = 0; i < itemIds.size(); i++) {
+            itemIds.remove(i);
+        }
         date = new Date();
         PdfDocument pdfDocument = new PdfDocument();
         Paint paint = new Paint();
@@ -261,7 +266,7 @@ public class Fragment_active_items_by_category extends Fragment {
         paint.setStyle(Paint.Style.FILL);
         canvas.drawText("No. ", 120, 650, paint);
         canvas.drawText("Category ", 480, 650, paint);
-        canvas.drawText("Items", 820, 650, paint);
+        canvas.drawText("Items", 830, 650, paint);
         canvas.drawLine(240, 610, 240, 660, paint);
         canvas.drawLine(800, 610, 800, 660, paint);
 
@@ -278,6 +283,7 @@ public class Fragment_active_items_by_category extends Fragment {
 
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             donatedItemsIds.add(doc.get("itemId").toString());
+                            Log.d("CheckMe", "Donated: " + doc.get("itemId"));
 
                         }
 
@@ -292,16 +298,22 @@ public class Fragment_active_items_by_category extends Fragment {
                                                 int food = 0, women = 0, men = 0, kids = 0, toys = 0, appliances = 0;
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                     String date = document.get("postedDate").toString();
+
                                                     try {
                                                         actualDate = new SimpleDateFormat("dd-MM-yyyy").parse(date);
+
                                                     } catch (ParseException e) {
                                                         Log.d("CheckMe", e.getMessage());
                                                     }
 
                                                     if ((actualDate.equals(dateStart) || actualDate.after(dateStart)) &&
                                                             (actualDate.equals(dateEnd) || actualDate.before(dateEnd))) {
+
                                                         if (!donatedItemsIds.contains(document.getId())) {
+
                                                             if (!itemIds.contains(document.getId())) {
+                                                                //Log.d("CheckMe", "yes " );
+                                                                Log.d("CheckMe", "item found " + document.getId());
                                                                 itemIds.add(document.getId());
                                                                 switch (document.get("category").toString()) {
                                                                     case "Food":
@@ -322,7 +334,7 @@ public class Fragment_active_items_by_category extends Fragment {
                                                                     case "Appliances":
                                                                         appliances++;
                                                                         break;
-                                                                    default:
+
 
                                                                 }
                                                             }
@@ -335,12 +347,12 @@ public class Fragment_active_items_by_category extends Fragment {
 
                                                 //set the adapter here
                                                 List<Integer> number = new ArrayList<>();
-                                                number.add(food);
-                                                number.add(women);
-                                                number.add(men);
-                                                number.add(kids);
-                                                number.add(toys);
                                                 number.add(appliances);
+                                                number.add(food);
+                                                number.add(kids);
+                                                number.add(men);
+                                                number.add(toys);
+                                                number.add(women);
 
 
 

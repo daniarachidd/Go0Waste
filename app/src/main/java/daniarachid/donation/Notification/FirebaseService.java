@@ -1,5 +1,7 @@
 package daniarachid.donation.Notification;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -24,6 +26,7 @@ class FirebaseService extends FirebaseInstanceIdService {
         fStore.collection("Tokens");
         Token token = new Token(tokenRefresh);
         fStore.document(user.getUid()).set(token);
+        Log.d("CheckMe", token.getToken());
 
     }
 }

@@ -6,21 +6,30 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -35,7 +44,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -133,13 +141,6 @@ public class EditProfile extends AppCompatActivity {
         mEmail.setText(email);
     }
 
-    public void saveChanges(View v) {
-        // SAVE CHANGES
-        if(mName.getText().toString().isEmpty() || mEmail.getText().toString().isEmpty() || mPhone.getText().toString().isEmpty()) {
-
-        }
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
@@ -192,18 +193,21 @@ public class EditProfile extends AppCompatActivity {
 
     }
 
-    /*
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
+        inflater.inflate(R.menu.menu_changepassword, menu);
         return true;
     }
 
-*/
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
+            case R.id.changepassword:
+                changePassword();
+                break;
             
             case android.R.id.home:
                 this.finish();
@@ -214,5 +218,54 @@ public class EditProfile extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void changePassword() {
+        final EditText resetPassword  = new EditText(this);
+        final AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(this);
+        passwordResetDialog.setTitle("Reset Password?");
+        passwordResetDialog.setMessage("Enter new password > 8 characters long");
+        passwordResetDialog.setView(resetPassword);
+
+        passwordResetDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String newPassword = resetPassword.getText().toString().trim();
+                if (TextUtils.isEmpty(newPassword)) {
+                    Toast.makeText(getApplicationContext(), "please enter a password", Toast.LENGTH_SHORT).show();
+                }
+
+                else if (newPassword.length() < 8) {
+                    Toast.makeText(getApplicationContext(), "Password must be at least 8 characters", Toast.LENGTH_SHORT).show();
+                }
+                 else {
+                    user.updatePassword(newPassword).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+
+                            Toast.makeText(getApplicationContext(), "Password reset successfully", Toast.LENGTH_SHORT).show();
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull @NotNull Exception e) {
+
+                            Toast.makeText(getApplicationContext(), "Password reset failed", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+
+            }
+        });
+
+        passwordResetDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        passwordResetDialog.create().show();
+
+    }
 
 }

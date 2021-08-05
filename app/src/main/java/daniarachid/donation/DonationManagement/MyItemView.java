@@ -44,7 +44,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import daniarachid.donation.MainActivity;
+import daniarachid.donation.UserAccount.MainActivity;
 import daniarachid.donation.R;
 
 public class MyItemView extends AppCompatActivity {
@@ -89,7 +89,7 @@ public class MyItemView extends AppCompatActivity {
         mQuan = findViewById(R.id.txtQuantity);
         mCategory = findViewById(R.id.spinCategory);
         mStatus = findViewById(R.id.txtStatus);
-        swStatus = findViewById(R.id.switchStatus);
+
         btnSave = findViewById(R.id.btnSave);
         btnCancel = findViewById(R.id.btnCancel);
 
@@ -208,8 +208,7 @@ public class MyItemView extends AppCompatActivity {
         mTitle.setText(title);
         mDesc.setText(description);
         mQuan.setText(quantity);
-        mStatus.setText("Available");
-        swStatus.setChecked(true);
+
 
         String[] categories = {"Food", "Women Clothes", "Men Clothes", "Kids Clothes", "Toys", "Appliances"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(MyItemView.this,android.R.layout.simple_spinner_item, categories);
@@ -219,7 +218,7 @@ public class MyItemView extends AppCompatActivity {
 
         //display pic
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference profileRef = storageReference.child("Items/" + itemId + "-" + title + ".jpg");
+        StorageReference profileRef = storageReference.child("Items/" + itemId +".jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
@@ -277,7 +276,7 @@ public class MyItemView extends AppCompatActivity {
         //UPLOAD IMAGE TO FIREBASE STORAGE
         StorageReference storageReference;
         storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference fileRef = storageReference.child("Items/" +itemId + "-" + title + ".jpg");
+        StorageReference fileRef = storageReference.child("Items/" +itemId  + ".jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {

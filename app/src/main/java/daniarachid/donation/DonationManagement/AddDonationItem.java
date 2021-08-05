@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import daniarachid.donation.MainActivity;
+import daniarachid.donation.UserAccount.MainActivity;
 import daniarachid.donation.R;
 
 public class AddDonationItem extends AppCompatActivity {
@@ -71,7 +71,7 @@ public class AddDonationItem extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference();
         userId = fAuth.getCurrentUser().getUid();
 
-        String[] categories = {"Food", "Women Clothes", "Men Clothes", "Kids Clothes", "Toys", "Appliances"};
+        String[] categories = {"Select category ..","Food", "Women Clothes", "Men Clothes", "Kids Clothes", "Toys", "Appliances"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddDonationItem.this,android.R.layout.simple_spinner_item, categories);
         spinCategory.setAdapter(adapter);
         adapter.notifyDataSetChanged();
@@ -119,7 +119,7 @@ public class AddDonationItem extends AppCompatActivity {
 
     private void uploadImageToFirebase(Uri imageUri) {
         //UPLOAD IMAGE TO FIREBASE STORAGE
-        StorageReference fileRef = storageReference.child("Items/" + itemId + "-" + mTitle.getText().toString() +".jpg");
+        StorageReference fileRef = storageReference.child("Items/" + itemId +".jpg");
         fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -152,26 +152,37 @@ public class AddDonationItem extends AppCompatActivity {
         String itemDesc = mDesc.getText().toString();
         String itemQuan = mQuantity.getText().toString();
         String category = spinCategory.getSelectedItem().toString();
-
-
-        int quantity = Integer.parseInt(itemQuan);
-        if (quantity <= 0) {
-            mQuantity.setError("Quantity must be > 0");
+        if (spinCategory.getSelectedItemPosition() ==0) {
+            Toast.makeText(getApplicationContext(), "Please select a category", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (TextUtils.isEmpty(itemQuan)) {
-            mQuantity.setError("Enter quantity");
-            return;
-        }
-        if (TextUtils.isEmpty(itemTitle)) {
-        mTitle.setError("Enter item title");
-        return;
-        }
 
-        if (TextUtils.isEmpty(itemDesc)) {
-            mDesc.setError("Enter item description");
-            return;
-        }
+
+
+
+            if (TextUtils.isEmpty(itemTitle)) {
+                mTitle.setError("Enter item title");
+                return;
+            }
+
+            if (TextUtils.isEmpty(itemDesc)) {
+                mDesc.setError("Enter item description");
+                return;
+            }
+
+            if (TextUtils.isEmpty(itemQuan)) {
+                mQuantity.setError("Enter quantity");
+                return;
+            } else {
+                int quantity = Integer.parseInt(itemQuan);
+                if (quantity <= 0) {
+                    mQuantity.setError("Quantity must be > 0");
+                    return;
+                }
+            }
+
+
+
 
         userId = fAuth.getCurrentUser().getUid();
         //Create an object of Product
@@ -186,7 +197,7 @@ public class AddDonationItem extends AppCompatActivity {
         uploadImageToFirebase(imageUri);
 
         //get today date
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
         Date date = new Date(System.currentTimeMillis());
         String currentTime = formatter.format(date);
         Map<String, Object> item = new HashMap<>();

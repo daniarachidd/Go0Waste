@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,7 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -43,12 +41,14 @@ import java.util.Set;
 
 import daniarachid.donation.Adapters.ChatAdapter;
 import daniarachid.donation.Administration.AdminControl;
+import daniarachid.donation.Administration.ContactUs;
+import daniarachid.donation.Administration.MainReport;
 import daniarachid.donation.DonationManagement.MainDonation;
 import daniarachid.donation.DonationManagement.TestMyItem;
 import daniarachid.donation.DonationRequestManagement.DonationRequestHistory;
 import daniarachid.donation.DonationRequestManagement.TestDonorRequestList;
 import daniarachid.donation.DonationRequestManagement.TestReceiverRequestList;
-import daniarachid.donation.MainActivity;
+import daniarachid.donation.UserAccount.MainActivity;
 import daniarachid.donation.R;
 import daniarachid.donation.UserAccount.UserProfile;
 
@@ -192,9 +192,14 @@ public class Chat extends AppCompatActivity implements NavigationView.OnNavigati
                 startActivity(new Intent(getApplicationContext(), Chat.class));
                 break;
             case R.id.nav_contactUs:
+                startActivity(new Intent(getApplicationContext(), ContactUs.class));
                 break;
             case R.id.nav_adminsControl:
                 startActivity(new Intent(getApplicationContext(), AdminControl.class));
+                break;
+            case R.id.nav_report:
+                startActivity(new Intent(getApplicationContext(), MainReport.class));
+                break;
             case R.id.nav_signout:
                 signout();
                 break;
@@ -202,7 +207,6 @@ public class Chat extends AppCompatActivity implements NavigationView.OnNavigati
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     @Override
     public void onBackPressed() {

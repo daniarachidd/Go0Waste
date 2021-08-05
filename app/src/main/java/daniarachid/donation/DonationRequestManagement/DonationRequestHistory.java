@@ -12,12 +12,10 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,10 +35,11 @@ import org.jetbrains.annotations.NotNull;
 
 import daniarachid.donation.Adapters.DonationHistoryPagerAdapter;
 import daniarachid.donation.Administration.AdminControl;
+import daniarachid.donation.Administration.ContactUs;
 import daniarachid.donation.Administration.MainReport;
 import daniarachid.donation.DonationManagement.MainDonation;
 import daniarachid.donation.DonationManagement.TestMyItem;
-import daniarachid.donation.MainActivity;
+import daniarachid.donation.UserAccount.MainActivity;
 import daniarachid.donation.Messaging.Chat;
 import daniarachid.donation.R;
 import daniarachid.donation.UserAccount.UserProfile;
@@ -208,6 +207,7 @@ public class DonationRequestHistory extends AppCompatActivity implements Navigat
                 startActivity(new Intent(getApplicationContext(), Chat.class));
                 break;
             case R.id.nav_contactUs:
+                startActivity(new Intent(getApplicationContext(), ContactUs.class));
                 break;
             case R.id.nav_adminsControl:
                 startActivity(new Intent(getApplicationContext(), AdminControl.class));
@@ -222,7 +222,6 @@ public class DonationRequestHistory extends AppCompatActivity implements Navigat
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     @Override
     public void onBackPressed() {

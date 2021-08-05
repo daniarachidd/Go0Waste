@@ -157,7 +157,7 @@ public class Fragment_donated_items_by_donor extends Fragment {
         paint.setStyle(Paint.Style.FILL);
         canvas.drawText("No. ", 120, 650, paint);
         canvas.drawText("Category ", 480, 650, paint);
-        canvas.drawText("Items", 820, 650, paint);
+        canvas.drawText("Items", 830, 650, paint);
         canvas.drawLine(240, 610, 240, 660, paint);
         canvas.drawLine(800, 610, 800, 660, paint);
 

@@ -81,7 +81,7 @@ public class ReceiverRequestsAdapter extends RecyclerView.Adapter<ReceiverReques
 
                     //get the picture of the item
                     StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                    StorageReference profileRef = storageReference.child("Items/" + itemIds.get(position) + "-" + title + ".jpg");
+                    StorageReference profileRef = storageReference.child("Items/" + itemIds.get(position) + ".jpg");
                     profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                         @Override
                         public void onSuccess(Uri uri) {

@@ -43,10 +43,11 @@ import java.util.List;
 
 import daniarachid.donation.Adapters.ReceiverRequestsAdapter;
 import daniarachid.donation.Administration.AdminControl;
+import daniarachid.donation.Administration.ContactUs;
 import daniarachid.donation.Administration.MainReport;
 import daniarachid.donation.DonationManagement.MainDonation;
 import daniarachid.donation.DonationManagement.TestMyItem;
-import daniarachid.donation.MainActivity;
+import daniarachid.donation.UserAccount.MainActivity;
 import daniarachid.donation.Messaging.Chat;
 import daniarachid.donation.R;
 import daniarachid.donation.UserAccount.UserProfile;
@@ -204,6 +205,7 @@ public class TestReceiverRequestList extends AppCompatActivity implements Naviga
                 startActivity(new Intent(getApplicationContext(), Chat.class));
                 break;
             case R.id.nav_contactUs:
+                startActivity(new Intent(getApplicationContext(), ContactUs.class));
                 break;
             case R.id.nav_adminsControl:
                 startActivity(new Intent(getApplicationContext(), AdminControl.class));
@@ -218,7 +220,6 @@ public class TestReceiverRequestList extends AppCompatActivity implements Naviga
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     @Override
     public void onBackPressed() {
@@ -243,9 +244,7 @@ public class TestReceiverRequestList extends AppCompatActivity implements Naviga
 
 
                         if (task.isSuccessful()) {
-                            if (task.getResult().isEmpty()) {
-                                Toast.makeText(getApplicationContext(), "No requests", Toast.LENGTH_SHORT).show();
-                            }
+
 
                             //adding the requests to array lists
                             for (QueryDocumentSnapshot doc : task.getResult()) {
@@ -330,20 +329,12 @@ public class TestReceiverRequestList extends AppCompatActivity implements Naviga
 
 
     //HANDLE OPTION MENU
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu_delete, menu);
-        MenuItem menuItem = menu.findItem(R.id.searchIcon);
-        return true;
-    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
 
-            case R.id.donationRequestsRec:
-                startActivity(new Intent(getApplicationContext(), TestReceiverRequestList.class));
-                break;
+
             case android.R.id.home:
                 this.finish();
                 return true;

@@ -45,11 +45,12 @@ import java.util.List;
 
 import daniarachid.donation.Adapters.MyItemsAdapter;
 import daniarachid.donation.Administration.AdminControl;
+import daniarachid.donation.Administration.ContactUs;
 import daniarachid.donation.Administration.MainReport;
 import daniarachid.donation.DonationRequestManagement.DonationRequestHistory;
 import daniarachid.donation.DonationRequestManagement.TestDonorRequestList;
 import daniarachid.donation.DonationRequestManagement.TestReceiverRequestList;
-import daniarachid.donation.MainActivity;
+import daniarachid.donation.UserAccount.MainActivity;
 import daniarachid.donation.Messaging.Chat;
 import daniarachid.donation.R;
 import daniarachid.donation.UserAccount.UserProfile;
@@ -216,6 +217,7 @@ public class TestMyItem extends AppCompatActivity implements NavigationView.OnNa
                 startActivity(new Intent(getApplicationContext(), Chat.class));
                 break;
             case R.id.nav_contactUs:
+                startActivity(new Intent(getApplicationContext(), ContactUs.class));
                 break;
             case R.id.nav_adminsControl:
                 startActivity(new Intent(getApplicationContext(), AdminControl.class));

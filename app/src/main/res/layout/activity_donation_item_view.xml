@@ -7,19 +7,6 @@
     tools:context=".DonationManagement.DonationItemView">
 
     <TextView
-        android:id="@+id/textView22"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="20dp"
-        android:text="@string/status"
-        android:textColor="#605D5D"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-    <TextView
         android:id="@+id/textView18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,18 +18,6 @@
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-    <TextView
-        android:id="@+id/txtStatus"
-        android:layout_width="89dp"
-        android:layout_height="24dp"
-        android:layout_marginStart="75dp"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="20dp"
-        android:textColor="#009688"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/textView22"
-        app:layout_constraintTop_toBottomOf="@+id/txtRequestDate" />
 
     <TextView
         android:id="@+id/txtRequestDate"
@@ -139,14 +114,14 @@
         android:id="@+id/btnCancelRequest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:width="300dp"
         android:text="Request "
         android:textSize="18sp"
         app:backgroundTint="#009688"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtStatus" />
+        app:layout_constraintTop_toBottomOf="@+id/txtRequestDate" />
 
     <TextView
         android:id="@+id/txtQuantity"

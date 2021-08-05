@@ -38,14 +38,9 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
-import daniarachid.donation.MainActivity;
 import daniarachid.donation.Messaging.Conversation;
 import daniarachid.donation.Notification.APISERVICE;
 import daniarachid.donation.Notification.Client;
@@ -73,6 +68,7 @@ public class DonorDonationRequest extends AppCompatActivity {
     APISERVICE apiservice;
     boolean notify = false;
 
+    MenuItem menuItem;
 
 
 
@@ -292,17 +288,30 @@ public class DonorDonationRequest extends AppCompatActivity {
                 requestDate = doc.get("requestDate").toString();
                 mQuantity.setText(doc.get("quantity").toString());
                 mDate.setText(doc.get("requestDate").toString());
+                requestStatus = doc.get("requestStatus").toString();
                 mStatus.setText(doc.get("requestStatus").toString());
                 mTitle.setText(title);
+
+                if (requestStatus.equals("Approved") || requestStatus.equals("Rejected") || requestStatus.equals("Donated")) {
+                    btnApprove.setEnabled(false);
+                    btnReject.setEnabled(false);
+                }
+                if (requestStatus.equals("Requested") || requestStatus.equals("Rejected") || requestStatus.equals("Donated")) {
+                    //MenuInflater inflater = getMenuInflater();
+                   /// inflater.inflate(R.menu.option_menu, menu);
+                    menuItem.setVisible(false);
+
+                }
                 //upload the picture
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                StorageReference profileRef = storageReference.child("Items/" + itemId + "-" + title + ".jpg");
+                StorageReference profileRef = storageReference.child("Items/" + itemId +".jpg");
                 profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         Picasso.get().load(uri).into(imgItem);
                     }
                 });
+
 
 
             }
@@ -331,8 +340,12 @@ public class DonorDonationRequest extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
+
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.option_menu, menu);
+
+
+            menuItem = menu.getItem(0);
         return true;
     }
 

@@ -9,14 +9,23 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,13 +49,13 @@ import com.squareup.picasso.Picasso;
 import org.jetbrains.annotations.NotNull;
 
 import daniarachid.donation.Administration.AdminControl;
+import daniarachid.donation.Administration.ContactUs;
 import daniarachid.donation.Administration.MainReport;
 import daniarachid.donation.DonationManagement.MainDonation;
 import daniarachid.donation.DonationManagement.TestMyItem;
 import daniarachid.donation.DonationRequestManagement.DonationRequestHistory;
 import daniarachid.donation.DonationRequestManagement.TestDonorRequestList;
 import daniarachid.donation.DonationRequestManagement.TestReceiverRequestList;
-import daniarachid.donation.MainActivity;
 import daniarachid.donation.Messaging.Chat;
 import daniarachid.donation.R;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -252,6 +261,7 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
                 startActivity(new Intent(getApplicationContext(), Chat.class));
                 break;
             case R.id.nav_contactUs:
+                startActivity(new Intent(getApplicationContext(), ContactUs.class));
                 break;
             case R.id.nav_adminsControl:
                 startActivity(new Intent(getApplicationContext(), AdminControl.class));
@@ -340,4 +350,7 @@ public class UserProfile extends AppCompatActivity implements NavigationView.OnN
         finish();;
 
     }
+
+
+
 }

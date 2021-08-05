@@ -48,7 +48,7 @@ import daniarachid.donation.Administration.ContactUs;
 import daniarachid.donation.Administration.MainReport;
 import daniarachid.donation.DonationRequestManagement.DonationRequestHistory;
 import daniarachid.donation.DonationRequestManagement.TestReceiverRequestList;
-import daniarachid.donation.MainActivity;
+import daniarachid.donation.UserAccount.MainActivity;
 import daniarachid.donation.Messaging.Chat;
 import daniarachid.donation.R;
 import daniarachid.donation.DonationRequestManagement.TestDonorRequestList;
@@ -230,7 +230,11 @@ public class MainDonation extends AppCompatActivity implements NavigationView.On
         // if the drawer is on the right size of the scrren --> GravityCompant.END
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (!searchView.isIconified()) {
+            searchView.setIconified(true);
+
+        }
+        else {
             super.onBackPressed();
         }
 
@@ -246,9 +250,9 @@ public class MainDonation extends AppCompatActivity implements NavigationView.On
                 if (task.isSuccessful()) {
                     //if there is no items to be displayed
                     if(task.getResult().isEmpty()) {
-                        txtEmpty = findViewById(R.id.txtEmptyItems);
+                        txtEmpty = findViewById(R.id.txtEmpty);
                         itemList.setVisibility(View.GONE);
-                        txtEmpty.setText("You haven't added any item yet");
+                        txtEmpty.setText("There are no donation items listed");
                         txtEmpty.setVisibility(View.VISIBLE);
 
                     }
@@ -314,7 +318,7 @@ public class MainDonation extends AppCompatActivity implements NavigationView.On
 
     public void searchData(String query) {
 
-        fStore.collection("Items").whereEqualTo("title", query).whereNotEqualTo("userId", fAuth.getCurrentUser().getUid()).get()
+        fStore.collection("Items").whereEqualTo("title", query).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<QuerySnapshot> task) {
@@ -357,6 +361,10 @@ public class MainDonation extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
+
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-import daniarachid.donation.MainActivity;
 import daniarachid.donation.R;
 
 public class SignupActivity extends AppCompatActivity {
@@ -101,6 +101,8 @@ public class SignupActivity extends AppCompatActivity {
             mEmail.setError("Email is required.");
             return;
         }
+
+
 
         if(TextUtils.isEmpty(password)) {
             mPassword.setError("password is required.");

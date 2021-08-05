@@ -9,8 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -34,7 +32,7 @@ import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 
-import daniarachid.donation.MainActivity;
+import daniarachid.donation.UserAccount.MainActivity;
 import daniarachid.donation.R;
 import daniarachid.donation.Messaging.Conversation;
 
@@ -147,7 +145,7 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
                 mTitle.setText(title);
                 //upload the picture
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                StorageReference profileRef = storageReference.child("Items/" + itemId + "-" + title + ".jpg");
+                StorageReference profileRef = storageReference.child("Items/" + itemId + ".jpg");
                 profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -180,7 +178,7 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
         return true;
     }
 
-     */
+*/
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -191,4 +189,6 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

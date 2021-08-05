@@ -63,7 +63,7 @@ public class MyItemsAdapter extends RecyclerView.Adapter<MyItemsAdapter.ViewHold
 
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference profileRef = storageReference.child("Items/" + productId.get(position) + "-" + titles.get(position) + ".jpg");
+        StorageReference profileRef = storageReference.child("Items/" + productId.get(position)  + ".jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

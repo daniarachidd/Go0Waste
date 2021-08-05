@@ -86,7 +86,7 @@ public class MainDonationViewAdapter extends RecyclerView.Adapter<MainDonationVi
 
 
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference profileRef = storageReference.child("Items/" + productId.get(position) + "-" + titles.get(position) + ".jpg");
+        StorageReference profileRef = storageReference.child("Items/" + productId.get(position) + ".jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

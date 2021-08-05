@@ -41,10 +41,11 @@ import java.util.List;
 
 import daniarachid.donation.Adapters.ReceiverRequestsAdapter;
 import daniarachid.donation.Administration.AdminControl;
+import daniarachid.donation.Administration.ContactUs;
 import daniarachid.donation.Administration.MainReport;
 import daniarachid.donation.DonationManagement.MainDonation;
 import daniarachid.donation.DonationManagement.TestMyItem;
-import daniarachid.donation.MainActivity;
+import daniarachid.donation.UserAccount.MainActivity;
 import daniarachid.donation.Messaging.Chat;
 import daniarachid.donation.R;
 import daniarachid.donation.UserAccount.UserProfile;
@@ -179,6 +180,7 @@ public class TestDonorRequestList extends AppCompatActivity implements Navigatio
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
+
     @Override
     public boolean onNavigationItemSelected(@NonNull @NotNull MenuItem item) {
         switch (item.getItemId()) {
@@ -201,6 +203,7 @@ public class TestDonorRequestList extends AppCompatActivity implements Navigatio
                 startActivity(new Intent(getApplicationContext(), Chat.class));
                 break;
             case R.id.nav_contactUs:
+                startActivity(new Intent(getApplicationContext(), ContactUs.class));
                 break;
             case R.id.nav_adminsControl:
                 startActivity(new Intent(getApplicationContext(), AdminControl.class));
@@ -215,7 +218,6 @@ public class TestDonorRequestList extends AppCompatActivity implements Navigatio
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
     @Override
     public void onBackPressed() {

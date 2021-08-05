@@ -1,4 +1,4 @@
-package daniarachid.donation;
+package daniarachid.donation.UserAccount;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import daniarachid.donation.DonationManagement.MainDonation;
-import daniarachid.donation.UserAccount.SignupActivity;
+import daniarachid.donation.R;
 
 public class MainActivity extends AppCompatActivity {
     EditText mEmail, mPassword;
@@ -47,14 +48,10 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar2);
         fAuth = FirebaseAuth.getInstance();
 
-        /**
-        // check if user is already logged in
-        if(fAuth.getCurrentUser() != null ) {
-            startActivity(new Intent(getApplicationContext(), TestMainDonation.class));
-            finish();
-        }
 
-         **/
+
+
+
 
 
 
@@ -72,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void unused) {
 
+                Log.d("CheckMe", "Something" + token);
                 //Toast.makeText(getApplicationContext(), "Token added successfully", Toast.LENGTH_SHORT).show();
             }
         });
@@ -85,12 +83,13 @@ public class MainActivity extends AppCompatActivity {
         // GET USER EMAIL
 
         EditText resetMail = new EditText(view.getContext());
+        resetMail.setHint("Email");
         AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(view.getContext());
         passwordResetDialog.setTitle("Reset password ?");
         passwordResetDialog.setMessage("Enter Your Email To Receive a Reset Link ");
 
         passwordResetDialog.setView(resetMail);
-        passwordResetDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        passwordResetDialog.setPositiveButton("Send", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // SEND RESET lINK
@@ -98,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
+
                         Toast.makeText(MainActivity.this, "Reset Link has been sent to your Email. ", Toast.LENGTH_SHORT).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        passwordResetDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        passwordResetDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // BACK TO LOGIN VIEW
@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity {
                                 public void onSuccess(InstanceIdResult instanceIdResult) {
                                     token = instanceIdResult.getToken();
                                     saveToken(token);
+                                    Log.d("CheckMe", "From sign in --> " + token);
                                 }
                             });
 

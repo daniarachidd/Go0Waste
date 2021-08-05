@@ -152,6 +152,7 @@ public class AdminControl extends AppCompatActivity implements  NavigationView.O
                 startActivity(new Intent(getApplicationContext(), Chat.class));
                 break;
             case R.id.nav_contactUs:
+                startActivity(new Intent(getApplicationContext(), ContactUs.class));
                 break;
             case R.id.nav_adminsControl:
                 startActivity(new Intent(getApplicationContext(), AdminControl.class));
@@ -166,7 +167,6 @@ public class AdminControl extends AppCompatActivity implements  NavigationView.O
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
     @Override
     public void onBackPressed() {
         // if the drawer is on the right size of the scrren --> GravityCompant.END

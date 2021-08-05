@@ -7,7 +7,7 @@ android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EEEEEE"
     android:id="@+id/chatActivity"
-    android:backgroundTint="#d8f2e8"
+    android:backgroundTint="#f5f4eb"
     >
 
     <androidx.recyclerview.widget.RecyclerView

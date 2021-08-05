@@ -9,8 +9,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -46,7 +44,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import daniarachid.donation.DonationRequestManagement.QuantityPickerDialog;
-import daniarachid.donation.MainActivity;
+import daniarachid.donation.UserAccount.MainActivity;
 import daniarachid.donation.Notification.APISERVICE;
 import daniarachid.donation.Notification.Client;
 import daniarachid.donation.Notification.Data;
@@ -60,7 +58,7 @@ import retrofit2.Callback;
 public class DonationItemView extends AppCompatActivity implements  NumberPicker.OnValueChangeListener{
     String itemId, title, category, quantity, description, userId, donor;
     ImageView itemImage;
-    TextView mTitle, mDesc, mQuan, mStatus, mPick, mCategory, mSelectedQuantity;
+    TextView mTitle, mDesc, mQuan, mPick, mCategory, mSelectedQuantity;
     Button btnRequest;
     FirebaseFirestore fStore;
     FirebaseAuth fAuth;
@@ -111,7 +109,7 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
         mDesc = findViewById(R.id.txtDesc);
         mQuan = findViewById(R.id.txtQuantity);
         mCategory = findViewById(R.id.txtRequestDate);
-        mStatus = findViewById(R.id.txtStatus);
+
         btnRequest = findViewById(R.id.btnCancelRequest);
         mPick = findViewById(R.id.pickQuantity);
         mSelectedQuantity = findViewById(R.id.txtSelectedQuan);
@@ -290,7 +288,6 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
         mTitle.setText(title);
         mDesc.setText(description);
         mQuan.setText(quantity);
-        mStatus.setText("Available");
         mCategory.setText(category);
 
 
@@ -334,7 +331,7 @@ public class DonationItemView extends AppCompatActivity implements  NumberPicker
 
         //display pic
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        StorageReference profileRef = storageReference.child("Items/" + itemId + "-" + title + ".jpg");
+        StorageReference profileRef = storageReference.child("Items/" + itemId + ".jpg");
         profileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {

@@ -41,9 +41,8 @@ import java.util.List;
 import java.util.Map;
 
 import daniarachid.donation.Adapters.MessageAdapter;
-import daniarachid.donation.DonationRequestManagement.TestReceiverRequestList;
 import daniarachid.donation.Entity.MessageModel;
-import daniarachid.donation.MainActivity;
+import daniarachid.donation.UserAccount.MainActivity;
 import daniarachid.donation.Notification.APISERVICE;
 import daniarachid.donation.Notification.Client;
 import daniarachid.donation.Notification.Data;
@@ -51,7 +50,6 @@ import daniarachid.donation.Notification.Response;
 import daniarachid.donation.Notification.Sender;
 import daniarachid.donation.Notification.Token;
 import daniarachid.donation.R;
-import daniarachid.donation.UserAccount.UserProfile;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -229,6 +227,7 @@ public class Conversation extends AppCompatActivity {
                 token = objectToken.getToken();
 
 
+                Log.d("CheckMe", "Chat token" + token);
                 Data data = new Data(userIdForToken,
                         R.drawable.notification, message, "New message from " + nameOfSender, receiverId, 1);
 

@@ -77,7 +77,7 @@
             android:label="@string/signupTitle"
             android:theme="@style/Theme.Donation" />
         <activity
-            android:name=".MainActivity"
+            android:name=".UserAccount.MainActivity"
             android:label="@string/signinTitle"
             android:theme="@style/Theme.Donation">
             <intent-filter>
