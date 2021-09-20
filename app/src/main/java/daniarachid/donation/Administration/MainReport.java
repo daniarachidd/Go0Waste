@@ -46,7 +46,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import daniarachid.donation.DonationManagement.MainDonation;
 import daniarachid.donation.DonationManagement.TestMyItem;
@@ -99,6 +101,7 @@ public class MainReport extends AppCompatActivity implements NavigationView.OnNa
         dateTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //dateToDialog.
                 dateToDialog.show();
             }
         });
@@ -193,6 +196,8 @@ public class MainReport extends AppCompatActivity implements NavigationView.OnNa
 
                     dateFrom.setText(date);
                 } else if (view == dateToDialog.getDatePicker()) {
+                    //get today date
+
                     dateTo.setText(date);
 
 
@@ -206,8 +211,13 @@ public class MainReport extends AppCompatActivity implements NavigationView.OnNa
 
         int style = AlertDialog.THEME_HOLO_LIGHT;
 
+
         dateFromDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
+
         dateToDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
+        dateToDialog.getDatePicker().setMaxDate(new Date().getTime());
+
+
     }
 
     private String makeDateString(int day, int month, int year) {

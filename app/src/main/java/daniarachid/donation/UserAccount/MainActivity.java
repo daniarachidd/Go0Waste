@@ -148,19 +148,14 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Signed in successfully", Toast.LENGTH_SHORT).show();
 
 
-
                             //get the token
                             FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
                                 @Override
                                 public void onSuccess(InstanceIdResult instanceIdResult) {
                                     token = instanceIdResult.getToken();
                                     saveToken(token);
-                                    Log.d("CheckMe", "From sign in --> " + token);
                                 }
                             });
-
-
-
                             startActivity(new Intent(getApplicationContext(), MainDonation.class));
                             progressBar.setVisibility(View.GONE);
                         } else {

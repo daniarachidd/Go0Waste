@@ -101,14 +101,10 @@ public class SignupActivity extends AppCompatActivity {
             mEmail.setError("Email is required.");
             return;
         }
-
-
-
         if(TextUtils.isEmpty(password)) {
             mPassword.setError("password is required.");
             return;
         }
-
         if(TextUtils.isEmpty(cPassword)) {
             mCPassword.setError("Confirm password is required.");
             return;
@@ -122,13 +118,13 @@ public class SignupActivity extends AppCompatActivity {
             mPassword.setError("Password must be > 8 characters");
             return;
         }
-
         if (!password.equals(cPassword)){
             mPassword.setError("Passwords do not match. ");
             mCPassword.setError("Passwords do not match");
             return;
         }
         // END OF DATA VALIDATION
+
         //-------------------------
 
         progressBar.setVisibility(View.VISIBLE);

@@ -126,24 +126,21 @@ public class DonorDonationRequest extends AppCompatActivity {
                 //notify user
                 FirebaseAuth fAuth = FirebaseAuth.getInstance();
                 String userId = fAuth.getCurrentUser().getUid();
-                fStore.collection("Users").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                fStore.collection("Users").document(userId).get().addOnSuccessListener(
+                        new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         nameOfSender = documentSnapshot.getString("name");
                         if (notify) {
                             sendRequestStatusNotification(receiverId, nameOfSender);
-
-
                         }
-
                         notify = false;
                     }
                 });
 
                 finish();
                 startActivity(new Intent(getApplicationContext(), TestDonorRequestList.class));
-
-
+                
             }
         });
 

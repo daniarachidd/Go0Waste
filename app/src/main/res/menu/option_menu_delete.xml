@@ -4,7 +4,7 @@
     <!-- android:icon="@drawable/exit" -->
     <item android:id="@+id/deleteItem"
 
-        android:title="Delete"
+        android:title="Clear chat"
         app:showAsAction="collapseActionView"
         android:iconTint="@color/white"
         />

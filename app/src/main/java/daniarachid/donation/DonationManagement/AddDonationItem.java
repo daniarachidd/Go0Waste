@@ -156,10 +156,6 @@ public class AddDonationItem extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Please select a category", Toast.LENGTH_SHORT).show();
             return;
         }
-
-
-
-
             if (TextUtils.isEmpty(itemTitle)) {
                 mTitle.setError("Enter item title");
                 return;

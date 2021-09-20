@@ -221,6 +221,7 @@ public class Fragment_active_items_by_category extends Fragment {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void createPdf() {
+        itemIds.clear();
         for (int i = 0; i < itemIds.size(); i++) {
             itemIds.remove(i);
         }
@@ -283,7 +284,7 @@ public class Fragment_active_items_by_category extends Fragment {
 
                         for (QueryDocumentSnapshot doc : task.getResult()) {
                             donatedItemsIds.add(doc.get("itemId").toString());
-                            Log.d("CheckMe", "Donated: " + doc.get("itemId"));
+                            //Log.d("CheckMe", "Donated: " + doc.get("itemId"));
 
                         }
 
@@ -313,7 +314,7 @@ public class Fragment_active_items_by_category extends Fragment {
 
                                                             if (!itemIds.contains(document.getId())) {
                                                                 //Log.d("CheckMe", "yes " );
-                                                                Log.d("CheckMe", "item found " + document.getId());
+                                                                //Log.d("CheckMe", "item found " + document.getId());
                                                                 itemIds.add(document.getId());
                                                                 switch (document.get("category").toString()) {
                                                                     case "Food":

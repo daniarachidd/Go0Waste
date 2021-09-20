@@ -79,7 +79,8 @@ public class ReceiverDonationRequestReview extends AppCompatActivity {
                         //delete the request from firestore
                         DocumentReference docRef = fStore.collection("DonationRequest").document(requestId);
                         docRef.delete();
-                        Toast.makeText(ReceiverDonationRequestReview.this, "Your request has been canceled", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ReceiverDonationRequestReview.this,
+                                "Your request has been canceled", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), TestReceiverRequestList.class));
                         finish();
                     }
